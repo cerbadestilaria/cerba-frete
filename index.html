@@ -1,0 +1,1772 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Frete — Cerba Destilaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --white: #ffffff;
+    --surface: #ffffff;
+    --surface2: #eef1f6;
+    --border: #d8dde8;
+    --border2: #c5ccd8;
+    --blue: #1a5fa8;
+    --blue-dark: #134c8a;
+    --blue-light: #e8f0fb;
+    --teal: #3ab5a0;
+    --teal-light: #e6f7f4;
+    --text: #1a2235;
+    --text2: #3d4f6e;
+    --muted: #8596b0;
+    --red: #d63f4a;
+    --red-light: #fbeaea;
+    --green: #2a7a5e;
+    --shadow: 0 2px 12px rgba(26,95,168,0.08);
+    --shadow-md: 0 4px 24px rgba(26,95,168,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--blue);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-logo img {
+    height: 38px;
+    width: 38px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: white;
+    padding: 3px;
+  }
+
+  .topbar-brand {
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .topbar-brand span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.65;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .topbar-origin {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 5px 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .topbar-origin::before {
+    content: '📍';
+    font-size: 12px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 16px 80px;
+  }
+
+  /* PAGE TITLE */
+  .page-header {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+  }
+
+  .page-title span { color: var(--teal); }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 9px 10px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(26,95,168,0.25);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* VEHICLE */
+  .veh-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .veh-btn {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    box-shadow: var(--shadow);
+  }
+
+  .veh-btn:hover { border-color: var(--blue); }
+  .veh-btn.active-truck { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 4px 16px rgba(26,95,168,0.15); }
+  .veh-btn.active-carreta { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 4px 16px rgba(58,181,160,0.15); }
+
+  .veh-icon { font-size: 24px; margin-bottom: 6px; }
+  .veh-name { font-size: 16px; font-weight: 800; margin-bottom: 3px; color: var(--text); }
+  .veh-btn.active-truck .veh-name  { color: var(--blue); }
+  .veh-btn.active-carreta .veh-name{ color: var(--teal); }
+  .veh-spec { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); line-height: 1.7; }
+  .veh-btn.active-truck .veh-spec  { color: var(--blue); opacity: 0.7; }
+  .veh-btn.active-carreta .veh-spec{ color: var(--teal); opacity: 0.8; }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--blue-light);
+  }
+
+  .card-title::before {
+    content: '';
+    display: block;
+    width: 4px; height: 14px;
+    background: linear-gradient(180deg, var(--blue), var(--teal));
+    border-radius: 2px;
+  }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 500;
+  }
+
+  #searchInput {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  #searchInput:focus {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
+  }
+
+  #searchInput::placeholder { color: var(--muted); font-weight: 500; }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: white;
+    border: 1.5px solid var(--blue);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 200;
+    max-height: 280px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  .dropdown.open { display: block; }
+
+  .dd-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    transition: background 0.12s;
+  }
+
+  .dd-item:last-child { border-bottom: none; }
+  .dd-item:hover, .dd-item.hi { background: var(--blue-light); }
+
+  .dd-city { font-weight: 700; color: var(--text); }
+  .dd-state {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--blue);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+  .dd-custom {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--teal);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+  }
+
+  .dd-dist { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
+  .dd-item:hover .dd-dist, .dd-item.hi .dd-dist { color: var(--blue); }
+
+  /* STATE FILTER */
+  .state-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+
+  .sf-btn {
+    padding: 5px 14px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .sf-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26,95,168,0.2);
+  }
+
+  /* SELECTED CITY */
+  .selected-city {
+    background: linear-gradient(135deg, var(--blue-light), var(--teal-light));
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .selected-city.visible { display: flex; }
+  .sc-name { font-size: 16px; font-weight: 800; color: var(--blue); }
+  .sc-dist { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--teal); margin-top: 2px; }
+  .sc-hint { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--teal); margin-top: 3px; }
+
+  .btn-clear {
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 16px; line-height: 1;
+    padding: 4px 6px; border-radius: 4px;
+    transition: all 0.15s;
+  }
+
+  .btn-clear:hover { background: rgba(214,63,74,0.1); color: var(--red); }
+
+  /* INPUTS */
+  .tanque-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 4px; }
+  .field { margin-bottom: 14px; }
+
+  input[type="number"], input[type="text"].form-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input[type="number"]:focus, input[type="text"].form-input:focus {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
+  }
+
+  select.form-select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238596b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+  }
+
+  select.form-select:focus { border-color: var(--blue); background-color: white; box-shadow: 0 0 0 3px rgba(26,95,168,0.1); }
+
+  .input-prefix { position: relative; }
+  .input-prefix span {
+    position: absolute; left: 13px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; pointer-events: none;
+  }
+  .input-prefix input { padding-left: 32px; }
+
+  /* FORMULA */
+  .formula {
+    background: #f8fafd;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 13px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 2.1;
+    margin-bottom: 16px;
+  }
+
+  .fy { color: var(--blue); font-weight: 500; }
+  .fb { color: var(--teal); font-weight: 500; }
+  .fg { color: #2a7a5e; font-weight: 500; }
+
+  /* BUTTON */
+  .btn-calc {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,95,168,0.3);
+  }
+
+  .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,95,168,0.35); }
+  .btn-calc:active { transform: translateY(0); }
+
+  /* RESULT */
+  .result-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+    animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-box.visible { display: block; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+
+  .result-header::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px;
+    width: 80px; height: 80px;
+    background: rgba(58,181,160,0.15);
+    border-radius: 50%;
+  }
+
+  .result-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 2px; color: rgba(255,255,255,0.65); text-transform: uppercase; margin-bottom: 8px; }
+  .result-value { font-size: clamp(2.8rem, 9vw, 4.2rem); font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; position: relative; z-index: 1; }
+  .result-unit { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 8px; font-family: 'IBM Plex Mono', monospace; position: relative; z-index: 1; }
+
+  .result-accent { height: 4px; background: linear-gradient(90deg, var(--teal), #5dd3c0); }
+
+  .breakdown { padding: 20px 22px; }
+
+  .bd-title { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  .bd-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--surface2); font-size: 13px; }
+  .bd-item:last-child { border-bottom: none; }
+  .bd-l { color: var(--muted); font-size: 12px; font-weight: 500; }
+  .bd-v { font-family: 'IBM Plex Mono', monospace; font-weight: 500; color: var(--text2); }
+  .bd-v.total { color: var(--blue); font-size: 16px; font-weight: 700; }
+  .bd-v.green { color: var(--teal); }
+
+  /* TABLE TAB */
+  .search-bar {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    margin-bottom: 14px;
+    transition: all 0.2s;
+  }
+
+  .search-bar:focus { border-color: var(--blue); background: white; }
+
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); max-height: 500px; overflow-y: auto; }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    background: var(--blue);
+    color: white;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--surface2); transition: background 0.1s; cursor: pointer; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--blue-light); }
+
+  tbody td { padding: 10px 14px; font-size: 13px; }
+  td.city-name { font-weight: 700; color: var(--text); }
+  td.dist-val { font-family: 'IBM Plex Mono', monospace; color: var(--blue); font-size: 12px; }
+  td.pedagio-val { font-family: 'IBM Plex Mono', monospace; color: var(--green); font-size: 12px; }
+
+  .state-badge { display: inline-block; background: var(--blue); color: white; border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+  .custom-badge { display: inline-block; background: var(--teal); color: white; border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; margin-left: 4px; }
+
+  /* CONFIG */
+  .config-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--surface2); }
+  .config-row:last-child { border-bottom: none; }
+  .config-label { font-size: 14px; color: var(--text); font-weight: 600; }
+  .config-sub { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
+
+  .config-input {
+    width: 120px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    text-align: right;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .config-input:focus { border-color: var(--blue); background: white; }
+
+  .btn-save {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,95,168,0.25);
+  }
+
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(26,95,168,0.3); }
+
+  /* ============================
+     ABA CADASTRAR — estilos
+     ============================ */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-field { margin-bottom: 0; }
+
+  .form-field label {
+    display: block;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 500;
+  }
+
+  .btn-add {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--teal), #2a9a88);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(58,181,160,0.3);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(58,181,160,0.4); }
+  .btn-add:active { transform: translateY(0); }
+
+  .cad-list { margin-top: 4px; }
+
+  .cad-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: all 0.15s;
+    gap: 10px;
+  }
+
+  .cad-item:hover { border-color: var(--blue); background: var(--blue-light); }
+  .cad-item:last-child { margin-bottom: 0; }
+
+  .cad-info { flex: 1; }
+  .cad-name { font-weight: 800; font-size: 15px; color: var(--text); }
+  .cad-meta { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 4px; display: flex; gap: 14px; flex-wrap: wrap; }
+  .cad-meta span { color: var(--blue); }
+  .cad-meta span.ped { color: var(--green); }
+
+  .cad-actions { display: flex; gap: 8px; }
+
+  .btn-use {
+    background: var(--blue-light);
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Raleway', sans-serif;
+    transition: all .15s;
+  }
+
+  .btn-use:hover { background: var(--blue); color: white; }
+
+  .btn-del {
+    background: var(--red-light);
+    border: 1px solid var(--red);
+    color: var(--red);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .btn-del:hover { background: var(--red); color: white; }
+
+  .empty-state {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .empty-icon { font-size: 36px; margin-bottom: 10px; }
+  .empty-state p { font-size: 13px; line-height: 1.6; }
+
+  /* INFO BOX */
+  .info-box {
+    background: var(--teal-light);
+    border: 1px solid var(--teal);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: var(--teal);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--blue);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    z-index: 999;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--teal);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.teal { background: #2a9a88; border-left-color: white; }
+  .toast.red { background: var(--red); border-left-color: #ff8f96; }
+
+  .hist-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .hist-item:last-child { margin-bottom: 0; }
+  .hist-left { flex: 1; }
+  .hist-city { font-weight: 700; font-size: 14px; color: var(--text); }
+  .hist-meta { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 3px; }
+  .hist-val { font-size: 18px; font-weight: 800; color: var(--blue); font-family: 'IBM Plex Mono', monospace; white-space:nowrap; }
+  .hist-reuse { background: var(--blue-light); border: 1px solid var(--blue); color: var(--blue); border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space:nowrap; font-family:'Raleway',sans-serif; transition: all .15s; }
+  .hist-reuse:hover { background: var(--blue); color: white; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--surface2); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media(max-width:540px){
+    .tanque-row{ grid-template-columns:1fr; }
+    .form-grid{ grid-template-columns:1fr; }
+    .form-grid-3{ grid-template-columns:1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="data:image/jpeg;base64,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" alt="Cerba">
+    <div class="topbar-brand">
+      Cerba Destilaria
+      <span>Sistema de Fretes</span>
+    </div>
+  </div>
+  <div class="topbar-origin">Origem: Piracicaba — SP</div>
+</div>
+
+<div class="container">
+
+  <div class="page-header">
+    <div>
+      <div class="page-title">Calculadora de <span>Frete</span></div>
+      <div class="page-subtitle">Selecione o destino e o veículo — o valor é calculado automaticamente</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('calc',this)">🧮 Calcular</button>
+    <button class="tab-btn" onclick="showTab('cadastrar',this)">➕ Cadastrar</button>
+    <button class="tab-btn" onclick="showTab('cities',this)">🗺️ Cidades</button>
+    <button class="tab-btn" onclick="showTab('historico',this)">🕓 Histórico</button>
+    <button class="tab-btn" onclick="showTab('config',this)">⚙️ Config</button>
+  </div>
+
+  <!-- ===== ABA CALCULAR ===== -->
+  <div id="tab-calc" class="tab-panel active">
+
+    <div class="veh-selector">
+      <button class="veh-btn active-truck" id="btn-truck" onclick="selectVeh('truck')">
+        <div class="veh-icon">🚛</div>
+        <div class="veh-name">Truck</div>
+        <div class="veh-spec" id="spec-truck">1,5 km/L · 6 eixos</div>
+      </button>
+      <button class="veh-btn" id="btn-carreta" onclick="selectVeh('carreta')">
+        <div class="veh-icon">🚚</div>
+        <div class="veh-name">Carreta</div>
+        <div class="veh-spec" id="spec-carreta">1,2 km/L · 8 eixos</div>
+      </button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Cidade de Destino</div>
+
+      <div class="state-filter" id="stateFilter">
+        <button class="sf-btn active" onclick="filterState('TODOS',this)">Todos</button>
+        <button class="sf-btn" onclick="filterState('SP',this)">SP</button>
+        <button class="sf-btn" onclick="filterState('MG',this)">MG</button>
+        <button class="sf-btn" onclick="filterState('PR',this)">PR</button>
+        <button class="sf-btn" onclick="filterState('GO',this)">GO</button>
+        <button class="sf-btn" onclick="filterState('SC',this)">SC</button>
+        <button class="sf-btn" onclick="filterState('CUSTOM',this)">⭐ Cadastradas</button>
+      </div>
+
+      <div class="search-wrap">
+        <label>Buscar cidade</label>
+        <input type="text" id="searchInput" placeholder="Digite o nome da cidade..." autocomplete="off"
+               oninput="onSearch()" onkeydown="onKey(event)">
+        <div class="dropdown" id="dropdown"></div>
+      </div>
+
+      <div class="selected-city" id="selectedCity">
+        <div>
+          <div class="sc-name" id="scName">—</div>
+          <div class="sc-dist" id="scDist">—</div>
+          <div class="sc-hint" id="scHint"></div>
+        </div>
+        <button class="btn-clear" onclick="clearCity()" title="Limpar">✕</button>
+      </div>
+
+      <div class="tanque-row">
+        <div class="field">
+          <label>Valor do Pedágio (ida)</label>
+          <div class="input-prefix">
+            <span>R$</span>
+            <input type="number" id="inputPedagio" placeholder="0,00" min="0" step="0.01" value="0" oninput="recalc()">
+          </div>
+        </div>
+        <div class="field">
+          <label>Quantidade de Tanques</label>
+          <input type="number" id="inputTanques" placeholder="1" min="1" step="1" value="1" oninput="recalc()">
+        </div>
+      </div>
+
+      <div class="formula" id="formulaBox">Selecione uma cidade para ver o cálculo</div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-header">
+        <div class="result-label">Valor do Frete</div>
+        <div class="result-value" id="rValor">—</div>
+        <div class="result-unit" id="rInfo">—</div>
+      </div>
+      <div class="result-accent"></div>
+      <div class="breakdown">
+        <div class="bd-title">Detalhamento do Cálculo</div>
+        <div class="bd-item"><span class="bd-l">Distância ida</span><span class="bd-v" id="b0">—</span></div>
+        <div class="bd-item"><span class="bd-l">Distância ida e volta</span><span class="bd-v" id="b1">—</span></div>
+        <div class="bd-item"><span class="bd-l">Litros consumidos</span><span class="bd-v" id="b2">—</span></div>
+        <div class="bd-item"><span class="bd-l">Custo diesel</span><span class="bd-v" id="b3">—</span></div>
+        <div class="bd-item"><span class="bd-l">Custo pedágio (valor × eixos)</span><span class="bd-v" id="b4">—</span></div>
+        <div class="bd-item"><span class="bd-l">Total bruto</span><span class="bd-v" id="b5">—</span></div>
+        <div class="bd-item"><span class="bd-l">Por tanque</span><span class="bd-v" id="b6">—</span></div>
+        <div class="bd-item"><span class="bd-l">+ Margem (R$ 0,04)</span><span class="bd-v green" id="b7">—</span></div>
+        <div class="bd-item"><span class="bd-l" style="font-weight:800;color:var(--blue)">Frete Final</span><span class="bd-v total" id="b8">—</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== ABA CADASTRAR ===== -->
+  <div id="tab-cadastrar" class="tab-panel">
+
+    <div class="card">
+      <div class="card-title">Cadastrar Nova Cidade</div>
+
+      <div class="info-box">
+        💡 Cidades cadastradas ficam salvas no dispositivo e aparecem com destaque ⭐ nas buscas.<br>
+        O pedágio informado aqui é preenchido automaticamente ao selecionar a cidade.
+      </div>
+
+      <div class="form-grid" style="margin-bottom:16px">
+        <div class="form-field">
+          <label>Nome da Cidade</label>
+          <input type="text" class="form-input" id="cad-nome" placeholder="Ex: Campinas" autocomplete="off">
+        </div>
+        <div class="form-field">
+          <label>Estado (UF)</label>
+          <select class="form-select" id="cad-uf">
+            <option value="">Selecione...</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option selected>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-grid-3" style="margin-bottom:16px">
+        <div class="form-field">
+          <label>Distância Ida (km)</label>
+          <input type="number" id="cad-km" placeholder="Ex: 150" min="1" step="1">
+        </div>
+        <div class="form-field">
+          <label>Pedágio Truck (R$)</label>
+          <div class="input-prefix">
+            <span>R$</span>
+            <input type="number" id="cad-ped-truck" placeholder="0,00" min="0" step="0.01" value="0">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Pedágio Carreta (R$)</label>
+          <div class="input-prefix">
+            <span>R$</span>
+            <input type="number" id="cad-ped-carreta" placeholder="0,00" min="0" step="0.01" value="0">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-add" onclick="cadastrarCidade()">⭐ Salvar Cidade</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Cidades Cadastradas</div>
+      <div class="cad-list" id="cadList">
+        <div class="empty-state">
+          <div class="empty-icon">🏙️</div>
+          <p>Nenhuma cidade cadastrada ainda.<br>Use o formulário acima para adicionar.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== ABA CIDADES ===== -->
+  <div id="tab-cities" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Tabela de Distâncias — Origem: Piracicaba SP</div>
+      <input type="text" class="search-bar" placeholder="Filtrar cidade ou estado..." oninput="filterTable(this.value)">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Cidade</th>
+              <th>UF</th>
+              <th>Dist. Ida</th>
+              <th>Ida + Volta</th>
+              <th>Pedágio</th>
+            </tr>
+          </thead>
+          <tbody id="citiesTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ABA CONFIG ===== -->
+  <div id="tab-config" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Truck 🚛</div>
+      <div class="config-row">
+        <div><div class="config-label">Consumo (km/L)</div></div>
+        <input type="number" class="config-input" id="cfg-tkml" value="1.5" step="0.1" min="0.1">
+      </div>
+      <div class="config-row">
+        <div><div class="config-label">Eixos por pedágio</div></div>
+        <input type="number" class="config-input" id="cfg-teixos" value="6" step="1" min="1">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Carreta 🚚</div>
+      <div class="config-row">
+        <div><div class="config-label">Consumo (km/L)</div></div>
+        <input type="number" class="config-input" id="cfg-ckml" value="1.2" step="0.1" min="0.1">
+      </div>
+      <div class="config-row">
+        <div><div class="config-label">Eixos por pedágio</div></div>
+        <input type="number" class="config-input" id="cfg-ceixos" value="8" step="1" min="1">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Parâmetros Gerais</div>
+      <div class="config-row">
+        <div><div class="config-label">Preço do diesel (R$/L)</div></div>
+        <input type="number" class="config-input" id="cfg-diesel" value="5.60" step="0.01" min="0.01">
+      </div>
+      <div class="config-row">
+        <div><div class="config-label">Margem adicional (R$)</div></div>
+        <input type="number" class="config-input" id="cfg-margem" value="0.04" step="0.01" min="0">
+      </div>
+    </div>
+    <button class="btn-save" onclick="saveConfig()">💾 Salvar Configurações</button>
+  </div>
+
+  <!-- ===== ABA HISTÓRICO ===== -->
+  <div id="tab-historico" class="tab-panel">
+    <div class="card">
+      <div class="card-title">Últimos Fretes Calculados</div>
+      <div id="historicoList"><p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p></div>
+      <button class="btn-save" style="margin-top:16px;background:var(--red);box-shadow:none" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =====================================================
+// BASE DE CIDADES PADRÃO
+// =====================================================
+const CIDADES_PADRAO = [
+  {n:"Adamantina", s:"SP", d:439},
+  {n:"Alfenas", s:"MG", d:440},
+  {n:"Altinópolis", s:"SP", d:255},
+  {n:"Americana", s:"SP", d:32},
+  {n:"Analândia", s:"SP", d:55},
+  {n:"Andradina", s:"SP", d:488},
+  {n:"Angatuba", s:"SP", d:155},
+  {n:"Anápolis", s:"GO", d:890},
+  {n:"Aparecida", s:"SP", d:282},
+  {n:"Aparecida de Goiânia", s:"GO", d:920},
+  {n:"Apucarana", s:"PR", d:490},
+  {n:"Araguari", s:"MG", d:480},
+  {n:"Arapongas", s:"PR", d:495},
+  {n:"Araraquara", s:"SP", d:137},
+  {n:"Araras", s:"SP", d:56},
+  {n:"Araucária", s:"PR", d:425},
+  {n:"Araxá", s:"MG", d:440},
+  {n:"Araçatuba", s:"SP", d:388},
+  {n:"Arceburgo", s:"MG", d:320},
+  {n:"Artur Nogueira", s:"SP", d:82},
+  {n:"Atibaia", s:"SP", d:128},
+  {n:"Avaré", s:"SP", d:175},
+  {n:"Barbacena", s:"MG", d:560},
+  {n:"Barretos", s:"SP", d:287},
+  {n:"Barueri", s:"SP", d:140},
+  {n:"Bebedouro", s:"SP", d:240},
+  {n:"Belo Horizonte", s:"MG", d:588},
+  {n:"Bertioga", s:"SP", d:250},
+  {n:"Betim", s:"MG", d:600},
+  {n:"Birigui", s:"SP", d:368},
+  {n:"Bocaina", s:"SP", d:148},
+  {n:"Bocaiúva", s:"MG", d:940},
+  {n:"Botucatu", s:"SP", d:113},
+  {n:"Bragança Paulista", s:"SP", d:139},
+  {n:"Brodowski", s:"SP", d:220},
+  {n:"Brotas", s:"SP", d:88},
+  {n:"Caldas Novas", s:"GO", d:720},
+  {n:"Cambé", s:"PR", d:478},
+  {n:"Campinas", s:"SP", d:76},
+  {n:"Campo Largo", s:"PR", d:410},
+  {n:"Campo Limpo Paulista", s:"SP", d:120},
+  {n:"Campo Mourão", s:"PR", d:570},
+  {n:"Capivari", s:"SP", d:42},
+  {n:"Caraguatatuba", s:"SP", d:307},
+  {n:"Carapicuíba", s:"SP", d:145},
+  {n:"Caratinga", s:"MG", d:820},
+  {n:"Cascavel", s:"PR", d:700},
+  {n:"Castro", s:"PR", d:490},
+  {n:"Catalão", s:"GO", d:680},
+  {n:"Catanduva", s:"SP", d:248},
+  {n:"Caxambu", s:"MG", d:430},
+  {n:"Caçapava", s:"SP", d:248},
+  {n:"Ceres", s:"GO", d:1010},
+  {n:"Cerqueira César", s:"SP", d:210},
+  {n:"Charqueada", s:"SP", d:22},
+  {n:"Cianorte", s:"PR", d:605},
+  {n:"Colombo", s:"PR", d:415},
+  {n:"Conchal", s:"SP", d:65},
+  {n:"Conselheiro Lafaiete", s:"MG", d:590},
+  {n:"Contagem", s:"MG", d:595},
+  {n:"Cordeirópolis", s:"SP", d:38},
+  {n:"Cornélio Procópio", s:"PR", d:525},
+  {n:"Corumbataí", s:"SP", d:48},
+  {n:"Cruzeiro", s:"SP", d:355},
+  {n:"Cubatão", s:"SP", d:218},
+  {n:"Curitiba", s:"PR", d:415},
+  {n:"Diadema", s:"SP", d:162},
+  {n:"Divinópolis", s:"MG", d:620},
+  {n:"Dois Córregos", s:"SP", d:110},
+  {n:"Dracena", s:"SP", d:494},
+  {n:"Elias Fausto", s:"SP", d:53},
+  {n:"Engenheiro Coelho", s:"SP", d:78},
+  {n:"Fazenda Rio Grande", s:"PR", d:420},
+  {n:"Fernandópolis", s:"SP", d:416},
+  {n:"Floreal", s:"SP", d:400},
+  {n:"Formiga", s:"MG", d:560},
+  {n:"Formosa", s:"GO", d:1020},
+  {n:"Foz do Iguaçu", s:"PR", d:885},
+  {n:"Franca", s:"SP", d:292},
+  {n:"Francisco Beltrão", s:"PR", d:760},
+  {n:"Francisco Morato", s:"SP", d:120},
+  {n:"Franco da Rocha", s:"SP", d:118},
+  {n:"Frutal", s:"MG", d:480},
+  {n:"General Salgado", s:"SP", d:410},
+  {n:"Goiás", s:"GO", d:1060},
+  {n:"Goiânia", s:"GO", d:930},
+  {n:"Governador Valadares", s:"MG", d:850},
+  {n:"Guaraniaçu", s:"PR", d:690},
+  {n:"Guarapuava", s:"PR", d:555},
+  {n:"Guaratinguetá", s:"SP", d:315},
+  {n:"Guarujá", s:"SP", d:240},
+  {n:"Guarulhos", s:"SP", d:160},
+  {n:"Guaxupé", s:"MG", d:340},
+  {n:"Guaíra", s:"SP", d:320},
+  {n:"Holambra", s:"SP", d:78},
+  {n:"Hortolândia", s:"SP", d:60},
+  {n:"Ibaté", s:"SP", d:110},
+  {n:"Ibiporã", s:"PR", d:480},
+  {n:"Ibitinga", s:"SP", d:182},
+  {n:"Ilha Solteira", s:"SP", d:510},
+  {n:"Indaiatuba", s:"SP", d:68},
+  {n:"Inhumas", s:"GO", d:950},
+  {n:"Ipatinga", s:"MG", d:800},
+  {n:"Ipeúna", s:"SP", d:35},
+  {n:"Iracemápolis", s:"SP", d:24},
+  {n:"Irati", s:"PR", d:530},
+  {n:"Itajubá", s:"MG", d:410},
+  {n:"Itanhaém", s:"SP", d:235},
+  {n:"Itapecerica da Serra", s:"SP", d:168},
+  {n:"Itapetininga", s:"SP", d:120},
+  {n:"Itapeva", s:"SP", d:241},
+  {n:"Itapevi", s:"SP", d:138},
+  {n:"Itatiba", s:"SP", d:105},
+  {n:"Itatinga", s:"SP", d:160},
+  {n:"Itaúna", s:"MG", d:580},
+  {n:"Itu", s:"SP", d:90},
+  {n:"Ituiutaba", s:"MG", d:430},
+  {n:"Itumbiara", s:"GO", d:600},
+  {n:"Ituverava", s:"SP", d:295},
+  {n:"Itápolis", s:"SP", d:195},
+  {n:"Jacarezinho", s:"PR", d:430},
+  {n:"Jacareí", s:"SP", d:210},
+  {n:"Jaguariúna", s:"SP", d:85},
+  {n:"Jales", s:"SP", d:449},
+  {n:"Janaúba", s:"MG", d:1020},
+  {n:"Jandira", s:"SP", d:138},
+  {n:"Januária", s:"MG", d:1050},
+  {n:"Jardinópolis", s:"SP", d:208},
+  {n:"Jataí", s:"GO", d:830},
+  {n:"Jaú", s:"SP", d:133},
+  {n:"José Bonifácio", s:"SP", d:318},
+  {n:"João Monlevade", s:"MG", d:740},
+  {n:"Juiz de Fora", s:"MG", d:660},
+  {n:"Jundiaí", s:"SP", d:107},
+  {n:"Laranjeiras do Sul", s:"PR", d:630},
+  {n:"Lavras", s:"MG", d:450},
+  {n:"Leme", s:"SP", d:72},
+  {n:"Limeira", s:"SP", d:39},
+  {n:"Lins", s:"SP", d:292},
+  {n:"Londrina", s:"PR", d:483},
+  {n:"Lorena", s:"SP", d:340},
+  {n:"Luziânia", s:"GO", d:900},
+  {n:"Manhuaçu", s:"MG", d:780},
+  {n:"Maringá", s:"PR", d:490},
+  {n:"Matinhos", s:"PR", d:530},
+  {n:"Mauá", s:"SP", d:165},
+  {n:"Medianeira", s:"PR", d:820},
+  {n:"Miguelópolis", s:"SP", d:275},
+  {n:"Mineiros", s:"GO", d:830},
+  {n:"Mineiros do Tietê", s:"SP", d:110},
+  {n:"Mirassol", s:"SP", d:290},
+  {n:"Mogi das Cruzes", s:"SP", d:198},
+  {n:"Mogi Guaçu", s:"SP", d:82},
+  {n:"Mogi Mirim", s:"SP", d:85},
+  {n:"Mombuca", s:"SP", d:32},
+  {n:"Mongaguá", s:"SP", d:230},
+  {n:"Monte Mor", s:"SP", d:55},
+  {n:"Montes Claros", s:"MG", d:900},
+  {n:"Morrinhos", s:"GO", d:680},
+  {n:"Morro da Fumaça", s:"SC", d:446},
+  {n:"Morungaba", s:"SP", d:110},
+  {n:"Muriaé", s:"MG", d:740},
+  {n:"Muzambinho", s:"MG", d:355},
+  {n:"Nerópolis", s:"GO", d:940},
+  {n:"Nova Odessa", s:"SP", d:45},
+  {n:"Oliveira", s:"MG", d:540},
+  {n:"Olímpia", s:"SP", d:290},
+  {n:"Osasco", s:"SP", d:148},
+  {n:"Ourinhos", s:"SP", d:287},
+  {n:"Paranaguá", s:"PR", d:520},
+  {n:"Paranavaí", s:"PR", d:600},
+  {n:"Pará de Minas", s:"MG", d:610},
+  {n:"Passos", s:"MG", d:430},
+  {n:"Patos de Minas", s:"MG", d:700},
+  {n:"Patrocínio", s:"MG", d:620},
+  {n:"Paulínia", s:"SP", d:68},
+  {n:"Pedreira", s:"SP", d:88},
+  {n:"Penápolis", s:"SP", d:342},
+  {n:"Pereira Barreto", s:"SP", d:468},
+  {n:"Peruíbe", s:"SP", d:242},
+  {n:"Pindamonhangaba", s:"SP", d:275},
+  {n:"Pinhais", s:"PR", d:418},
+  {n:"Pinheiro Preto", s:"SC", d:415},
+  {n:"Piracanjuba", s:"GO", d:710},
+  {n:"Pirapora", s:"MG", d:860},
+  {n:"Pirassununga", s:"SP", d:75},
+  {n:"Pirinópolis", s:"GO", d:895},
+  {n:"Ponta Grossa", s:"PR", d:500},
+  {n:"Pontal do Paraná", s:"PR", d:535},
+  {n:"Ponte Nova", s:"MG", d:730},
+  {n:"Pouso Alegre", s:"MG", d:310},
+  {n:"Poços de Caldas", s:"MG", d:290},
+  {n:"Praia Grande", s:"SP", d:228},
+  {n:"Presidente Prudente", s:"SP", d:466},
+  {n:"Promissão", s:"SP", d:295},
+  {n:"Quirinópolis", s:"GO", d:720},
+  {n:"Rafard", s:"SP", d:35},
+  {n:"Ribeirão Pires", s:"SP", d:172},
+  {n:"Ribeirão Preto", s:"SP", d:195},
+  {n:"Rio Claro", s:"SP", d:32},
+  {n:"Rio das Pedras", s:"SP", d:19},
+  {n:"Rio Verde", s:"GO", d:830},
+  {n:"Rolândia", s:"PR", d:485},
+  {n:"Sacramento", s:"MG", d:480},
+  {n:"Saltinho", s:"SP", d:28},
+  {n:"Salto", s:"SP", d:98},
+  {n:"Santa Bárbara d\'Oeste", s:"SP", d:28},
+  {n:"Santa Cruz da Conceição", s:"SP", d:45},
+  {n:"Santa Gertrudes", s:"SP", d:38},
+  {n:"Santa Maria da Serra", s:"SP", d:30},
+  {n:"Santo André", s:"SP", d:160},
+  {n:"Santo Antônio da Platina", s:"PR", d:440},
+  {n:"Santo Antônio de Posse", s:"SP", d:88},
+  {n:"Santos", s:"SP", d:227},
+  {n:"Senador Canedo", s:"GO", d:925},
+  {n:"Serra Negra", s:"SP", d:140},
+  {n:"Sertãozinho", s:"SP", d:205},
+  {n:"Sete Lagoas", s:"MG", d:650},
+  {n:"Socorro", s:"SP", d:145},
+  {n:"Sorocaba", s:"SP", d:110},
+  {n:"Sumaré", s:"SP", d:50},
+  {n:"Suzano", s:"SP", d:185},
+  {n:"São Bernardo do Campo", s:"SP", d:162},
+  {n:"São Caetano do Sul", s:"SP", d:158},
+  {n:"São Carlos", s:"SP", d:96},
+  {n:"São Joaquim da Barra", s:"SP", d:274},
+  {n:"São José do Rio Preto", s:"SP", d:302},
+  {n:"São José dos Campos", s:"SP", d:226},
+  {n:"São José dos Pinhais", s:"PR", d:422},
+  {n:"São Lourenço", s:"MG", d:390},
+  {n:"São Paulo", s:"SP", d:154},
+  {n:"São Pedro", s:"SP", d:32},
+  {n:"São Sebastião", s:"SP", d:298},
+  {n:"São Sebastião do Paraíso", s:"MG", d:340},
+  {n:"São Vicente", s:"SP", d:225},
+  {n:"Tabatinga", s:"SP", d:155},
+  {n:"Taboão da Serra", s:"SP", d:155},
+  {n:"Taquarituba", s:"SP", d:220},
+  {n:"Taubaté", s:"SP", d:268},
+  {n:"Toledo", s:"PR", d:730},
+  {n:"Trindade", s:"GO", d:935},
+  {n:"Três Corações", s:"MG", d:390},
+  {n:"Três Lagoas", s:"SP", d:530},
+  {n:"Tupã", s:"SP", d:375},
+  {n:"Ubatuba", s:"SP", d:320},
+  {n:"Uberaba", s:"MG", d:372},
+  {n:"Uberlândia", s:"MG", d:450},
+  {n:"Ubá", s:"MG", d:680},
+  {n:"Umuarama", s:"PR", d:650},
+  {n:"União da Vitória", s:"PR", d:595},
+  {n:"Uruaçu", s:"GO", d:1020},
+  {n:"Valinhos", s:"SP", d:82},
+  {n:"Valparaíso de Goiás", s:"GO", d:910},
+  {n:"Varginha", s:"MG", d:390},
+  {n:"Vinhedo", s:"SP", d:88},
+  {n:"Viçosa", s:"MG", d:720},
+  {n:"Votuporanga", s:"SP", d:385},
+  {n:"Várzea Paulista", s:"SP", d:112},
+  {n:"Águas de São Pedro", s:"SP", d:38}
+];
+
+// =====================================================
+// CIDADES CUSTOMIZADAS (localStorage)
+// Formato: {n, s, d, pedTruck, pedCarreta, custom:true}
+// =====================================================
+function loadCidadesCustom(){
+  try{ const s=localStorage.getItem('frete_cidades_custom'); return s?JSON.parse(s):[]; }catch{ return []; }
+}
+function saveCidadesCustom(arr){
+  try{ localStorage.setItem('frete_cidades_custom',JSON.stringify(arr)); }catch{}
+}
+
+// Lista unificada: padrão + custom (custom aparecem primeiro)
+function getAllCidades(){
+  const custom = loadCidadesCustom();
+  const padrao = CIDADES_PADRAO;
+  return [...custom, ...padrao].sort((a,b)=>a.n.localeCompare(b.n,'pt'));
+}
+
+// =====================================================
+// CONFIG
+// =====================================================
+let cfg = {truck:{kml:1.5,eixos:6},carreta:{kml:1.2,eixos:8},diesel:5.60,margem:0.04};
+(function(){
+  try{ const s=localStorage.getItem('frete_v4'); if(s) cfg=JSON.parse(s); }catch{}
+  syncCfgInputs(); updateSpecs();
+})();
+
+function saveConfig(){
+  cfg.truck.kml    = parseFloat(document.getElementById('cfg-tkml').value)||1.5;
+  cfg.truck.eixos  = parseInt(document.getElementById('cfg-teixos').value)||6;
+  cfg.carreta.kml  = parseFloat(document.getElementById('cfg-ckml').value)||1.2;
+  cfg.carreta.eixos= parseInt(document.getElementById('cfg-ceixos').value)||8;
+  cfg.diesel       = parseFloat(document.getElementById('cfg-diesel').value)||5.60;
+  cfg.margem       = parseFloat(document.getElementById('cfg-margem').value)||0.04;
+  try{ localStorage.setItem('frete_v4',JSON.stringify(cfg)); }catch{}
+  updateSpecs(); recalc();
+  showToast('✓ Configurações salvas!', 'blue');
+}
+
+function syncCfgInputs(){
+  document.getElementById('cfg-tkml').value    = cfg.truck.kml;
+  document.getElementById('cfg-teixos').value  = cfg.truck.eixos;
+  document.getElementById('cfg-ckml').value    = cfg.carreta.kml;
+  document.getElementById('cfg-ceixos').value  = cfg.carreta.eixos;
+  document.getElementById('cfg-diesel').value  = cfg.diesel;
+  document.getElementById('cfg-margem').value  = cfg.margem;
+}
+
+function updateSpecs(){
+  document.getElementById('spec-truck').textContent   = `${cfg.truck.kml.toFixed(1)} km/L · ${cfg.truck.eixos} eixos`;
+  document.getElementById('spec-carreta').textContent = `${cfg.carreta.kml.toFixed(1)} km/L · ${cfg.carreta.eixos} eixos`;
+}
+
+// =====================================================
+// TOAST
+// =====================================================
+function showToast(msg, type='blue'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2400);
+}
+
+// =====================================================
+// STATE
+// =====================================================
+let veiculo='truck', selectedIdx=null, stateFilter='TODOS', hiIdx=-1;
+// selectedIdx agora é índice dentro de getAllCidades()
+
+function showTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='cities') renderTable('');
+  if(name==='historico') renderHistorico();
+  if(name==='cadastrar') renderCadList();
+}
+
+function selectVeh(v){
+  veiculo=v;
+  document.getElementById('btn-truck').className   ='veh-btn'+(v==='truck'?' active-truck':'');
+  document.getElementById('btn-carreta').className ='veh-btn'+(v==='carreta'?' active-carreta':'');
+  recalc();
+}
+
+function filterState(s,btn){
+  stateFilter=s;
+  document.querySelectorAll('.sf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  onSearch();
+}
+
+// =====================================================
+// SEARCH / DROPDOWN
+// =====================================================
+function getFiltered(q){
+  const all = getAllCidades();
+  let list;
+  if(stateFilter==='TODOS') list = all;
+  else if(stateFilter==='CUSTOM') list = all.filter(c=>c.custom);
+  else list = all.filter(c=>c.s===stateFilter);
+  if(q) list = list.filter(c=>c.n.toLowerCase().includes(q.toLowerCase()));
+  return list;
+}
+
+function onSearch(){
+  const q = document.getElementById('searchInput').value.trim();
+  const dd = document.getElementById('dropdown');
+  hiIdx=-1;
+  const all = getAllCidades();
+  const matches = getFiltered(q).slice(0,12);
+  if(!matches.length){ dd.classList.remove('open'); return; }
+  dd.innerHTML = matches.map((c,i)=>`
+    <div class="dd-item" data-i="${i}" onmousedown="pickCityByObj(${JSON.stringify(c).replace(/"/g,'&quot;')})">
+      <span>
+        <span class="dd-city">${c.n}</span>
+        <span class="dd-state">${c.s}</span>
+        ${c.custom ? '<span class="dd-custom">⭐</span>' : ''}
+      </span>
+      <span class="dd-dist">${c.d} km ida</span>
+    </div>
+  `).join('');
+  dd.classList.add('open');
+}
+
+function onKey(e){
+  const dd=document.getElementById('dropdown');
+  const items=dd.querySelectorAll('.dd-item');
+  if(!dd.classList.contains('open')||!items.length) return;
+  if(e.key==='ArrowDown'){ hiIdx=Math.min(hiIdx+1,items.length-1); }
+  else if(e.key==='ArrowUp'){ hiIdx=Math.max(hiIdx-1,0); }
+  else if(e.key==='Enter'){ if(hiIdx>=0) items[hiIdx].dispatchEvent(new Event('mousedown')); return; }
+  else return;
+  items.forEach((it,i)=>it.classList.toggle('hi',i===hiIdx));
+  e.preventDefault();
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-wrap'))
+    document.getElementById('dropdown').classList.remove('open');
+});
+
+// =====================================================
+// PEDÁGIO SALVO POR CIDADE (legado, mantido para compat.)
+// =====================================================
+function loadPedagios(){
+  try{ const s=localStorage.getItem('frete_pedagogios'); return s?JSON.parse(s):{}; }catch{ return {}; }
+}
+function savePedagios(obj){
+  try{ localStorage.setItem('frete_pedagogios',JSON.stringify(obj)); }catch{}
+}
+
+// =====================================================
+// HISTÓRICO
+// =====================================================
+function loadHistorico(){
+  try{ const s=localStorage.getItem('frete_historico'); return s?JSON.parse(s):[]; }catch{ return []; }
+}
+function saveHistorico(arr){
+  try{ localStorage.setItem('frete_historico',JSON.stringify(arr)); }catch{}
+}
+function addHistorico(entry){
+  let h = loadHistorico();
+  h.unshift(entry);
+  if(h.length > 30) h = h.slice(0,30);
+  saveHistorico(h);
+}
+
+function renderHistorico(){
+  const h = loadHistorico();
+  const el = document.getElementById('historicoList');
+  if(!h.length){
+    el.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p>';
+    return;
+  }
+  el.innerHTML = h.map((e,i)=>`
+    <div class="hist-item">
+      <div class="hist-left">
+        <div class="hist-city">${e.cidade} <span style="font-size:11px;font-weight:500;color:var(--muted)">— ${e.estado}</span></div>
+        <div class="hist-meta">${e.veiculo} · Ped: R$${e.pedagio.toFixed(2)} · ${e.tanques} tanque(s) · ${e.data}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="hist-val">${e.frete}</div>
+        <button class="hist-reuse" onclick="reuseHistorico(${i})">↩ Usar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function reuseHistorico(i){
+  const h = loadHistorico();
+  const e = h[i];
+  const all = getAllCidades();
+  const c = all.find(c=>c.n===e.cidade && c.s===e.estado);
+  if(!c) return;
+  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  selectVeh(e.veiculoKey);
+  document.getElementById('inputPedagio').value = e.pedagio;
+  document.getElementById('inputTanques').value = e.tanques;
+  pickCityByObj(c);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function limparHistorico(){
+  if(confirm('Limpar todo o histórico?')){ saveHistorico([]); renderHistorico(); }
+}
+
+// =====================================================
+// PICK / CLEAR CITY
+// =====================================================
+let currentCity = null;
+
+function pickCityByObj(c){
+  // c pode vir como string (do HTML) ou objeto
+  if(typeof c === 'string'){
+    try{ c = JSON.parse(c); }catch{ return; }
+  }
+  currentCity = c;
+  document.getElementById('searchInput').value=`${c.n} - ${c.s}`;
+  document.getElementById('dropdown').classList.remove('open');
+  document.getElementById('scName').textContent=`${c.n} — ${c.s}${c.custom?' ⭐':''}`;
+  document.getElementById('scDist').textContent=`${c.d} km ida · ${c.d*2} km ida+volta`;
+
+  const hint = document.getElementById('scHint');
+
+  // Preenche pedágio: prioridade é o pedágio cadastrado na cidade custom
+  if(c.custom){
+    const ped = veiculo === 'truck' ? (c.pedTruck||0) : (c.pedCarreta||0);
+    document.getElementById('inputPedagio').value = ped;
+    if(ped > 0){
+      hint.textContent = `⭐ Pedágio cadastrado (${veiculo==='truck'?'Truck':'Carreta'}): R$ ${ped.toFixed(2).replace('.',',')}`;
+    } else {
+      hint.textContent = '⭐ Cidade cadastrada — pedágio não informado';
+    }
+  } else {
+    const pedagogios = loadPedagios();
+    const key = `${c.n}-${c.s}`;
+    if(pedagogios[key] !== undefined){
+      document.getElementById('inputPedagio').value = pedagogios[key];
+      hint.textContent = `⚡ Pedágio salvo: R$ ${parseFloat(pedagogios[key]).toFixed(2).replace('.',',')}`;
+    } else {
+      document.getElementById('inputPedagio').value = 0;
+      hint.textContent = '';
+    }
+  }
+
+  document.getElementById('selectedCity').classList.add('visible');
+  recalc();
+}
+
+// Mantém compatibilidade com histórico antigo que usa índice
+function pickCity(idx){
+  const all = getAllCidades();
+  if(idx < all.length) pickCityByObj(all[idx]);
+}
+
+function clearCity(){
+  currentCity=null;
+  document.getElementById('searchInput').value='';
+  document.getElementById('selectedCity').classList.remove('visible');
+  document.getElementById('resultBox').classList.remove('visible');
+  document.getElementById('formulaBox').textContent='Selecione uma cidade para ver o cálculo';
+  document.getElementById('scHint').textContent='';
+}
+
+// =====================================================
+// CALCULAR
+// =====================================================
+function fmt(n){ return 'R$ '+n.toFixed(2).replace('.',','); }
+
+function recalc(){
+  if(!currentCity) return;
+  const c  = currentCity;
+  const v  = cfg[veiculo];
+  const dist   = c.d;
+  const dist2  = dist*2;
+  const pedagio= parseFloat(document.getElementById('inputPedagio').value)||0;
+  const tanques= parseFloat(document.getElementById('inputTanques').value)||1;
+  const margem = cfg.margem;
+
+  const capacidade  = veiculo === 'truck' ? 15000 : 30000;
+  const litros      = dist2 / v.kml;
+  const custoDiesel = litros * cfg.diesel;
+  const custoPed    = pedagio * v.eixos;
+  const bruto       = custoDiesel + custoPed;
+  const porTanque   = bruto / tanques;
+  const final       = (porTanque / capacidade) + margem;
+
+  // Salva pedágio desta cidade (para cidades padrão)
+  if(!c.custom && pedagio > 0){
+    const pedagogios = loadPedagios();
+    pedagogios[`${c.n}-${c.s}`] = pedagio;
+    savePedagios(pedagogios);
+    document.getElementById('scHint').textContent = `⚡ Pedágio salvo: R$ ${pedagio.toFixed(2).replace('.',',')}`;
+  }
+
+  document.getElementById('formulaBox').innerHTML =
+    `<span class="fy">(${dist2} km ÷ ${v.kml} km/L) × R$${cfg.diesel.toFixed(2)}</span> = ${fmt(custoDiesel)} <em style="opacity:.6">(diesel)</em><br>`+
+    `<span class="fb">R$${pedagio.toFixed(2)} × ${v.eixos} eixos</span> = ${fmt(custoPed)} <em style="opacity:.6">(pedágio)</em><br>`+
+    `<span class="fg">(${fmt(custoDiesel)} + ${fmt(custoPed)}) ÷ ${tanques} ÷ ${capacidade.toLocaleString('pt-BR')} + R$${margem.toFixed(2)}</span> = <strong style="color:var(--text2)">${fmt(final)}</strong>`;
+
+  document.getElementById('rValor').textContent = fmt(final);
+  document.getElementById('rInfo').textContent  =
+    `${veiculo==='truck'?'🚛 Truck':'🚚 Carreta'} · ${c.n}-${c.s} · ${tanques} tanque(s)`;
+
+  document.getElementById('b0').textContent = `${dist} km`;
+  document.getElementById('b1').textContent = `${dist2} km`;
+  document.getElementById('b2').textContent = `${litros.toFixed(2)} L`;
+  document.getElementById('b3').textContent = fmt(custoDiesel);
+  document.getElementById('b4').textContent = `${fmt(custoPed)} (${v.eixos} eixos)`;
+  document.getElementById('b5').textContent = fmt(bruto);
+  document.getElementById('b6').textContent = fmt(porTanque);
+  document.getElementById('b7').textContent = `÷ ${capacidade.toLocaleString('pt-BR')} = ${fmt(porTanque/capacidade)}`;
+  document.getElementById('b8').textContent = fmt(final);
+
+  document.getElementById('resultBox').classList.add('visible');
+
+  const now = new Date();
+  const data = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  addHistorico({
+    cidade: c.n, estado: c.s,
+    veiculo: veiculo==='truck'?'🚛 Truck':'🚚 Carreta',
+    veiculoKey: veiculo,
+    pedagio, tanques, frete: fmt(final), data
+  });
+}
+
+// =====================================================
+// CADASTRAR CIDADE
+// =====================================================
+function cadastrarCidade(){
+  const nome = document.getElementById('cad-nome').value.trim();
+  const uf   = document.getElementById('cad-uf').value;
+  const km   = parseInt(document.getElementById('cad-km').value)||0;
+  const pedT = parseFloat(document.getElementById('cad-ped-truck').value)||0;
+  const pedC = parseFloat(document.getElementById('cad-ped-carreta').value)||0;
+
+  if(!nome){ alert('Informe o nome da cidade.'); return; }
+  if(!uf)  { alert('Selecione o estado (UF).'); return; }
+  if(km < 1){ alert('Informe a distância de ida em km.'); return; }
+
+  const custom = loadCidadesCustom();
+
+  // Verifica duplicata
+  const dup = custom.find(c => c.n.toLowerCase()===nome.toLowerCase() && c.s===uf);
+  if(dup){
+    if(!confirm(`"${nome} - ${uf}" já está cadastrado. Deseja atualizar?`)) return;
+    dup.d = km; dup.pedTruck = pedT; dup.pedCarreta = pedC;
+    saveCidadesCustom(custom);
+    showToast('✓ Cidade atualizada!', 'teal');
+    renderCadList();
+    return;
+  }
+
+  custom.push({ n: nome, s: uf, d: km, pedTruck: pedT, pedCarreta: pedC, custom: true });
+  saveCidadesCustom(custom);
+
+  // Limpa form
+  document.getElementById('cad-nome').value = '';
+  document.getElementById('cad-km').value = '';
+  document.getElementById('cad-ped-truck').value = 0;
+  document.getElementById('cad-ped-carreta').value = 0;
+  document.getElementById('cad-uf').value = 'SP';
+
+  showToast(`⭐ ${nome} - ${uf} cadastrada!`, 'teal');
+  renderCadList();
+}
+
+function renderCadList(){
+  const custom = loadCidadesCustom();
+  const el = document.getElementById('cadList');
+  if(!custom.length){
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🏙️</div><p>Nenhuma cidade cadastrada ainda.<br>Use o formulário acima para adicionar.</p></div>`;
+    return;
+  }
+  const sorted = [...custom].sort((a,b)=>a.n.localeCompare(b.n,'pt'));
+  el.innerHTML = sorted.map((c,i)=>`
+    <div class="cad-item">
+      <div class="cad-info">
+        <div class="cad-name">⭐ ${c.n} <span style="font-size:12px;font-weight:600;color:var(--muted)">— ${c.s}</span></div>
+        <div class="cad-meta">
+          <span>📍 ${c.d} km ida · ${c.d*2} km ida+volta</span>
+          <span class="ped">🚛 Truck: R$ ${(c.pedTruck||0).toFixed(2)}</span>
+          <span class="ped">🚚 Carreta: R$ ${(c.pedCarreta||0).toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="cad-actions">
+        <button class="btn-use" onclick="usarCidadeCad(${custom.indexOf(c)})">↗ Usar</button>
+        <button class="btn-del" onclick="excluirCidadeCad(${custom.indexOf(c)})" title="Excluir">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function usarCidadeCad(idx){
+  const custom = loadCidadesCustom();
+  const c = custom[idx];
+  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  pickCityByObj(c);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function excluirCidadeCad(idx){
+  const custom = loadCidadesCustom();
+  const c = custom[idx];
+  if(!confirm(`Excluir "${c.n} - ${c.s}"?`)) return;
+  custom.splice(idx, 1);
+  saveCidadesCustom(custom);
+  showToast('🗑 Cidade removida', 'red');
+  renderCadList();
+}
+
+// =====================================================
+// TABELA DE CIDADES
+// =====================================================
+function renderTable(q){
+  const tbody = document.getElementById('citiesTable');
+  const all   = getAllCidades();
+  const list  = q
+    ? all.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.s.toLowerCase().includes(q.toLowerCase()))
+    : all;
+
+  const pedagogios = loadPedagios();
+
+  tbody.innerHTML = list.map(c=>{
+    let pedStr = '—';
+    if(c.custom){
+      const t = c.pedTruck||0, cr = c.pedCarreta||0;
+      pedStr = `T: R$${t.toFixed(2)} / C: R$${cr.toFixed(2)}`;
+    } else {
+      const key = `${c.n}-${c.s}`;
+      if(pedagogios[key] !== undefined) pedStr = `R$ ${parseFloat(pedagogios[key]).toFixed(2)}`;
+    }
+    return `
+      <tr onclick="goCalc(${JSON.stringify(c).replace(/"/g,'&quot;')})">
+        <td class="city-name">
+          ${c.n}
+          ${c.custom ? '<span class="custom-badge">⭐</span>' : ''}
+        </td>
+        <td><span class="state-badge">${c.s}</span></td>
+        <td class="dist-val">${c.d} km</td>
+        <td class="dist-val">${c.d*2} km</td>
+        <td class="pedagio-val">${pedStr}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function filterTable(q){ renderTable(q); }
+
+function goCalc(c){
+  if(typeof c === 'string') try{ c=JSON.parse(c); }catch{ return; }
+  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  pickCityByObj(c);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
