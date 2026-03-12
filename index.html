@@ -22,8 +22,6 @@
     --text2: #3d4f6e;
     --muted: #8596b0;
     --red: #d63f4a;
-    --red-light: #fbeaea;
-    --green: #2a7a5e;
     --shadow: 0 2px 12px rgba(26,95,168,0.08);
     --shadow-md: 0 4px 24px rgba(26,95,168,0.12);
   }
@@ -102,7 +100,7 @@
 
   /* CONTAINER */
   .container {
-    max-width: 860px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 28px 16px 80px;
   }
@@ -124,7 +122,9 @@
     letter-spacing: -0.5px;
   }
 
-  .page-title span { color: var(--teal); }
+  .page-title span {
+    color: var(--teal);
+  }
 
   .page-subtitle {
     font-size: 13px;
@@ -143,23 +143,21 @@
     padding: 4px;
     margin-bottom: 20px;
     box-shadow: var(--shadow);
-    flex-wrap: wrap;
   }
 
   .tab-btn {
     flex: 1;
-    padding: 9px 10px;
+    padding: 9px 12px;
     border: none;
     border-radius: 7px;
     background: transparent;
     color: var(--muted);
     font-family: 'Raleway', sans-serif;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
     letter-spacing: 0.2px;
-    white-space: nowrap;
   }
 
   .tab-btn.active {
@@ -193,8 +191,18 @@
   }
 
   .veh-btn:hover { border-color: var(--blue); }
-  .veh-btn.active-truck { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 4px 16px rgba(26,95,168,0.15); }
-  .veh-btn.active-carreta { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 4px 16px rgba(58,181,160,0.15); }
+
+  .veh-btn.active-truck {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 4px 16px rgba(26,95,168,0.15);
+  }
+
+  .veh-btn.active-carreta {
+    border-color: var(--teal);
+    background: var(--teal-light);
+    box-shadow: 0 4px 16px rgba(58,181,160,0.15);
+  }
 
   .veh-icon { font-size: 24px; margin-bottom: 6px; }
   .veh-name { font-size: 16px; font-weight: 800; margin-bottom: 3px; color: var(--text); }
@@ -313,15 +321,6 @@
     border-radius: 4px;
     margin-left: 8px;
   }
-  .dd-custom {
-    font-size: 10px;
-    font-family: 'IBM Plex Mono', monospace;
-    background: var(--teal);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 4px;
-  }
 
   .dd-dist { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
   .dd-item:hover .dd-dist, .dd-item.hi .dd-dist { color: var(--blue); }
@@ -365,7 +364,6 @@
   .selected-city.visible { display: flex; }
   .sc-name { font-size: 16px; font-weight: 800; color: var(--blue); }
   .sc-dist { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--teal); margin-top: 2px; }
-  .sc-hint { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--teal); margin-top: 3px; }
 
   .btn-clear {
     background: none; border: none;
@@ -381,7 +379,7 @@
   .tanque-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 4px; }
   .field { margin-bottom: 14px; }
 
-  input[type="number"], input[type="text"].form-input {
+  input[type="number"] {
     width: 100%;
     background: var(--surface2);
     border: 1.5px solid var(--border);
@@ -396,32 +394,11 @@
     -webkit-appearance: none;
   }
 
-  input[type="number"]:focus, input[type="text"].form-input:focus {
+  input[type="number"]:focus {
     border-color: var(--blue);
     background: white;
     box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
   }
-
-  select.form-select {
-    width: 100%;
-    background: var(--surface2);
-    border: 1.5px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 14px;
-    font-weight: 500;
-    outline: none;
-    transition: all 0.2s;
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238596b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-  }
-
-  select.form-select:focus { border-color: var(--blue); background-color: white; box-shadow: 0 0 0 3px rgba(26,95,168,0.1); }
 
   .input-prefix { position: relative; }
   .input-prefix span {
@@ -431,6 +408,7 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 13px; pointer-events: none;
   }
+
   .input-prefix input { padding-left: 32px; }
 
   /* FORMULA */
@@ -468,7 +446,11 @@
     box-shadow: 0 4px 14px rgba(26,95,168,0.3);
   }
 
-  .btn-calc:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,95,168,0.35); }
+  .btn-calc:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,95,168,0.35);
+  }
+
   .btn-calc:active { transform: translateY(0); }
 
   /* RESULT */
@@ -515,17 +497,62 @@
     border-radius: 50%;
   }
 
-  .result-label { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 2px; color: rgba(255,255,255,0.65); text-transform: uppercase; margin-bottom: 8px; }
-  .result-value { font-size: clamp(2.8rem, 9vw, 4.2rem); font-weight: 800; color: white; letter-spacing: -2px; line-height: 1; position: relative; z-index: 1; }
-  .result-unit { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 8px; font-family: 'IBM Plex Mono', monospace; position: relative; z-index: 1; }
+  .result-label {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
 
-  .result-accent { height: 4px; background: linear-gradient(90deg, var(--teal), #5dd3c0); }
+  .result-value {
+    font-size: clamp(2.8rem, 9vw, 4.2rem);
+    font-weight: 800;
+    color: white;
+    letter-spacing: -2px;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-unit {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* TEAL accent bar */
+  .result-accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), #5dd3c0);
+  }
 
   .breakdown { padding: 20px 22px; }
 
-  .bd-title { font-size: 10px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .bd-title {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
 
-  .bd-item { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--surface2); font-size: 13px; }
+  .bd-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--surface2);
+    font-size: 13px;
+  }
+
   .bd-item:last-child { border-bottom: none; }
   .bd-l { color: var(--muted); font-size: 12px; font-weight: 500; }
   .bd-v { font-family: 'IBM Plex Mono', monospace; font-weight: 500; color: var(--text2); }
@@ -550,7 +577,13 @@
 
   .search-bar:focus { border-color: var(--blue); background: white; }
 
-  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); max-height: 500px; overflow-y: auto; }
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    max-height: 500px;
+    overflow-y: auto;
+  }
 
   table { width: 100%; border-collapse: collapse; }
 
@@ -574,13 +607,27 @@
   tbody td { padding: 10px 14px; font-size: 13px; }
   td.city-name { font-weight: 700; color: var(--text); }
   td.dist-val { font-family: 'IBM Plex Mono', monospace; color: var(--blue); font-size: 12px; }
-  td.pedagio-val { font-family: 'IBM Plex Mono', monospace; color: var(--green); font-size: 12px; }
 
-  .state-badge { display: inline-block; background: var(--blue); color: white; border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
-  .custom-badge { display: inline-block; background: var(--teal); color: white; border-radius: 4px; padding: 2px 7px; font-size: 10px; font-family: 'IBM Plex Mono', monospace; font-weight: 500; margin-left: 4px; }
+  .state-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+  }
 
   /* CONFIG */
-  .config-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--surface2); }
+  .config-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--surface2);
+  }
+
   .config-row:last-child { border-bottom: none; }
   .config-label { font-size: 14px; color: var(--text); font-weight: 600; }
   .config-sub { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
@@ -620,131 +667,6 @@
 
   .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(26,95,168,0.3); }
 
-  /* ============================
-     ABA CADASTRAR — estilos
-     ============================ */
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .form-grid-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-  }
-
-  .form-field { margin-bottom: 0; }
-
-  .form-field label {
-    display: block;
-    font-size: 11px;
-    font-family: 'IBM Plex Mono', monospace;
-    letter-spacing: 1.2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 7px;
-    font-weight: 500;
-  }
-
-  .btn-add {
-    width: 100%;
-    margin-top: 20px;
-    padding: 14px;
-    background: linear-gradient(135deg, var(--teal), #2a9a88);
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-family: 'Raleway', sans-serif;
-    font-size: 15px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 4px 14px rgba(58,181,160,0.3);
-    letter-spacing: 0.3px;
-  }
-
-  .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(58,181,160,0.4); }
-  .btn-add:active { transform: translateY(0); }
-
-  .cad-list { margin-top: 4px; }
-
-  .cad-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 13px 16px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-bottom: 10px;
-    transition: all 0.15s;
-    gap: 10px;
-  }
-
-  .cad-item:hover { border-color: var(--blue); background: var(--blue-light); }
-  .cad-item:last-child { margin-bottom: 0; }
-
-  .cad-info { flex: 1; }
-  .cad-name { font-weight: 800; font-size: 15px; color: var(--text); }
-  .cad-meta { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 4px; display: flex; gap: 14px; flex-wrap: wrap; }
-  .cad-meta span { color: var(--blue); }
-  .cad-meta span.ped { color: var(--green); }
-
-  .cad-actions { display: flex; gap: 8px; }
-
-  .btn-use {
-    background: var(--blue-light);
-    border: 1px solid var(--blue);
-    color: var(--blue);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    cursor: pointer;
-    white-space: nowrap;
-    font-family: 'Raleway', sans-serif;
-    transition: all .15s;
-  }
-
-  .btn-use:hover { background: var(--blue); color: white; }
-
-  .btn-del {
-    background: var(--red-light);
-    border: 1px solid var(--red);
-    color: var(--red);
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all .15s;
-  }
-
-  .btn-del:hover { background: var(--red); color: white; }
-
-  .empty-state {
-    text-align: center;
-    padding: 36px 20px;
-    color: var(--muted);
-  }
-
-  .empty-state .empty-icon { font-size: 36px; margin-bottom: 10px; }
-  .empty-state p { font-size: 13px; line-height: 1.6; }
-
-  /* INFO BOX */
-  .info-box {
-    background: var(--teal-light);
-    border: 1px solid var(--teal);
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: 12px;
-    color: var(--teal);
-    font-family: 'IBM Plex Mono', monospace;
-    margin-bottom: 16px;
-    line-height: 1.7;
-  }
-
   /* TOAST */
   .toast {
     position: fixed;
@@ -764,9 +686,9 @@
   }
 
   .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.teal { background: #2a9a88; border-left-color: white; }
-  .toast.red { background: var(--red); border-left-color: #ff8f96; }
 
+
+  .sc-hint { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--teal); margin-top: 3px; }
   .hist-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .hist-item:last-child { margin-bottom: 0; }
   .hist-left { flex: 1; }
@@ -776,15 +698,66 @@
   .hist-reuse { background: var(--blue-light); border: 1px solid var(--blue); color: var(--blue); border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space:nowrap; font-family:'Raleway',sans-serif; transition: all .15s; }
   .hist-reuse:hover { background: var(--blue); color: white; }
 
+
+  /* ── VIAGENS ── */
+  .status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; font-family:'IBM Plex Mono',monospace; }
+  .status-rota    { background:#fff3e0; color:#e67e00; border:1px solid #ffc96b; }
+  .status-entregue{ background:#e6f7f4; color:#1a8a72; border:1px solid #3ab5a0; }
+  .status-aguardando{ background:#f0f4ff; color:#1a5fa8; border:1px solid #90b3e8; }
+  .viagens-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:20px; }
+  .viagem-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px 28px; box-shadow:var(--shadow); transition:all .25s; border-left:5px solid var(--border); }
+  .viagem-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .viagem-card.status-rota     { border-left-color:#e67e00; }
+  .viagem-card.status-entregue { border-left-color:var(--teal); }
+  .viagem-card.status-aguardando{ border-left-color:var(--blue); }
+  .viagem-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; gap:12px; }
+  .viagem-rota { font-size:17px; font-weight:800; color:var(--blue); line-height:1.3; }
+  .viagem-rota span { color:var(--teal); display:block; }
+  .viagem-placa { font-size:12px; font-family:'IBM Plex Mono',monospace; color:var(--muted); margin-top:5px; background:var(--surface2); display:inline-block; padding:3px 10px; border-radius:6px; letter-spacing:1px; }
+  .viagem-meta { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .viagem-meta-item { background:var(--surface2); border-radius:10px; padding:12px 16px; }
+  .viagem-meta-label { font-size:10px; font-family:'IBM Plex Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+  .viagem-meta-value { font-size:14px; font-weight:700; color:var(--text); }
+  .viagem-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-top:14px; border-top:1px solid var(--border); }
+  .viagem-tempo { font-size:12px; font-family:'IBM Plex Mono',monospace; color:var(--muted); }
+  .viagem-tempo strong { color:var(--blue); font-size:13px; }
+  .viagem-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .btn-status { padding:8px 16px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:'Raleway',sans-serif; border:none; transition:all .15s; }
+  .btn-editar { background:var(--blue-light); color:var(--blue); border:1px solid var(--blue); }
+  .btn-editar:hover { background:var(--blue); color:white; }
+  .btn-excluir { background:rgba(214,63,74,.08); color:var(--red); border:1px solid rgba(214,63,74,.3); }
+  .btn-excluir:hover { background:var(--red); color:white; }
+  .btn-entregar { background:var(--teal-light); color:#1a8a72; border:1px solid var(--teal); }
+  .btn-entregar:hover { background:var(--teal); color:white; }
+  @media(max-width:900px){ .viagens-grid{ grid-template-columns:1fr; } }
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:500; display:none; align-items:center; justify-content:center; padding:16px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:white; border-radius:16px; padding:28px; width:100%; max-width:520px; box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:slideUp .3s cubic-bezier(.16,1,.3,1); max-height:90vh; overflow-y:auto; }
+  .modal-title { font-size:18px; font-weight:800; color:var(--blue); margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid var(--blue-light); }
+  .modal-field { margin-bottom:14px; }
+  .modal-field label { display:block; font-size:11px; font-family:'IBM Plex Mono',monospace; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
+  .modal-field input, .modal-field select { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:11px 14px; color:var(--text); font-family:'Raleway',sans-serif; font-size:14px; font-weight:600; outline:none; transition:all .2s; -webkit-appearance:none; }
+  .modal-field input:focus, .modal-field select:focus { border-color:var(--blue); background:white; box-shadow:0 0 0 3px rgba(26,95,168,.1); }
+  .modal-footer { display:flex; gap:10px; margin-top:20px; }
+  .btn-modal-save { flex:1; padding:13px; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); color:white; border:none; border-radius:10px; font-family:'Raleway',sans-serif; font-size:15px; font-weight:800; cursor:pointer; }
+  .btn-modal-cancel { padding:13px 20px; background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:10px; font-family:'Raleway',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
+  .login-overlay { position:fixed; inset:0; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); z-index:600; display:none; align-items:center; justify-content:center; }
+  .login-overlay.open { display:flex; }
+  .login-box { background:white; border-radius:16px; padding:36px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+  .login-logo { font-size:32px; margin-bottom:8px; }
+  .login-title { font-size:20px; font-weight:800; color:var(--blue); margin-bottom:4px; }
+  .login-sub { font-size:13px; color:var(--muted); margin-bottom:24px; }
+  .login-error { background:rgba(214,63,74,.08); border:1px solid rgba(214,63,74,.3); color:var(--red); border-radius:8px; padding:10px; font-size:13px; margin-bottom:14px; display:none; }
+  .empty-state { text-align:center; padding:40px 20px; color:var(--muted); font-size:14px; }
+  .empty-state .es-icon { font-size:48px; margin-bottom:12px; }
+  .progress-bar { height:4px; background:var(--surface2); border-radius:2px; overflow:hidden; margin-top:10px; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--teal)); border-radius:2px; transition:width .3s; }
+
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--surface2); }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
-  @media(max-width:540px){
-    .tanque-row{ grid-template-columns:1fr; }
-    .form-grid{ grid-template-columns:1fr; }
-    .form-grid-3{ grid-template-columns:1fr 1fr; }
-  }
+  @media(max-width:480px){ .tanque-row{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -792,7 +765,7 @@
 <!-- TOP BAR -->
 <div class="topbar">
   <div class="topbar-logo">
-    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADIAMgDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAcIBQYBAgQD/8QAQhAAAQQCAQMCBAMFAwgLAAAAAQACAwQFEQYHEiExQQgTFFEiYYEVIzJxkVJyoRYkN0KCkrGzJzM4U3R1g5WyzwdP/xAAaAQEAAgMBAAAAAAAAAAAAAAAAAgUBAwQG/8QALxEAAgICAgECBQIFBQAAAAAAAAECAwQREiExBVETIkFhcYHRFBUjQuEGMrHB8P/aAAwDAQACEQMRAD8AuWiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIB6oixGX5BjMYeyecOm1sRM8v8A6e36oQlOMFuTMuEXlxtn6ulFZMZj+a0PDT6gH0/wX0ZYhfKYmPDnAbIHnSi5Ja2ST2to+yIikZCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgOPZVw+IPqpYnvWOIccsuhrQkx37MZ06R3vE0+zR6EjyTsegO5o6qZyTjfT/M5mE9s0NciF32keQxh/3nBVS6ScXqcnz89vOWTBhMbGbeSnc4jbd+Gb9du0fz0DrzpX/ouNVqWTatqPhfc8169l27ji0vTl5f2Pb054TyDlUndjanbVadSWpttib9xvXk/kAT99KY+HQcM4bmK1Ktbdnc9NI2D5kQ/BCXHR15IH5+SfX0BIUd8y6l2s0z9icdi/ZHHoR8uKCEBjpWDwC7Xo0/2R48+drdeg/DrpyEfI8jXfDWibuq2QaMjiNd+j7AE6Pvsa9Fb50rZUSsyJcY66ivL9t/sjyeFCuObCrEhznvub8L30v+2ZjqljuQco5XFicZVlkq04x3Pd+GJsjhssl3oDRby7QHqfHkraeAcJh42z6mxK2zfe3ReBpsY9w338+5P+Hne4+AuV5azPslTGiPUV7fU91T6PTDKllTfKb9/C/ByiIuItwiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiICOfiNry2Oj2aEQJMfyZCB7gSsJ/oNn9FWl95+O6XVMXXPa/MX5LFkt8F0UXayNh+47+86+4CubncdWy+GuYu23ur24HwSD37XAg/8VWDg/FZouqvHOL5mPb8VesskaR+FzWN+fG/X2eSvNTsCMU4U4zqlXWFzVdMmmXXRWW2Pd/VdkRFznaEREAREQBERAEREAREQBERAERdXOa0EkgADySdaQHKKPc/1m6a4ay6ra5PXlmadFtWN84B+xcwFv6bXfj/WTpvm7Da1PlFaOZx01lpj4Nk+gBeACfyBW7+Gu1y4vX4Of+Lo3x5rf5JARcNIcNtIIP2XWR7Y2Oe9wa1oJJcdAAevlaTo2dkCjvOdaummJtOqz8mhnladEVYXzt3/eY0t/xWT4j1N4LyuwKuE5FWmsu/hglDoZHH8mvALv02trx7VHk4vX4OdZVLlxU1v8m4e+lq3IeKQ3eV4jlFPtiyNCUCQn0mhIcxwP5gPcQfzI9wRtS1XlHPeJ8azNLDZjMRw5G69jIKzGOke4ud2tJDQe0E+50PBWKnYpfJ5/9szcq3H+p4RtW1ytR5n1H4XxCQQZ/PV61kgEV2NdLKAfQljASAfYkALvwXqBxPmrZhxzLMtywaMsTo3RyMBPg9rgCR+Y2PbafBsUefF69zPx6nLhyWyvXxJc/wCV1+qkvHcdmruOx9IQAR1ZnRGVz2teS4tIJ/iA0ToAemyVa5u+0fdUo+JYa695X+9V/wCTGrV8v6icL4i/5Ofz9WtPrfyG7llAPoSxgLgPzIAVjmU7qpUI9tfT9Cqwb9XXOyXSf1/U230RR1hutvTPKWm1oeTRQSuOh9VDJC0/7b2ho/UqQYZI5o2yRPa9jgC1zTsEfkfsq2dU63qaaLau6u1fJJP8H0QoSANkgLQ+R9XunWAsOrX+T1XTtOnR1mvnIP2JYCAfyJCQrnY9QW2LLYVrc2kb4ijrDdbOmeVstrQcnhgld4H1UMkLf997Q0f1UgwyRzRtlie17HAOa5p2CD7j8ksqnW9TTQrurs/2STPqiIoG0IiIAiIgOPdVl+Lvn2QhyEXB8XYfXr/IE+QcxxBlLt9sZI/1QBsj32Pt5s0fHlUp+J0b675Meo1V8f8AosVl6TXGd/zLelsqPWbJQx9RettI37pv8N1K5g6+S5jkrsVqxGJBTqFrPlAjYD3OBJOj5AA0fGyvL1X+Havh+O2c1xHI3LBqRmWalb7XOewDbixzQPIAJ0Qd+dHegbQt/hH8l0miZLE+KQBzHtLXNPoQRohRXqeQrOXLr2+hP+U4zr4qPfuQB8G/Kcpk8PluPZCaWxXxnyn1Hv2TG1/cDHs+wLdge2z7ALWvij55l8zzAdO8FLK2rE+OOzHEdG1O/RDCfdo20a9CSd70NWN4pxfj/FqDqPHsVXx8D3d72xA7eda24nyTr7kqmvUPLHA/EJk868uLX0GbFn5Rf29/Y8OA3o63rW9HX2XXhuGRlTsjHwtpfc4c1WY2JCqUvL039iaeGfDVxqti4n8ou3L2Qe3crK8vy4YyR5DdDZ16bJG/sFqfWjoPW4xgJ+UcQu3HR0gJbFWd4c9jAfL43gA/h9SDs6BIPjRyA+KiQDX+Q7f/AHM//ksdyf4k3ZvjeTw54a2EXqktYyftLu7A9hbvXyxvW966P+Uu+0fdUo+JYa695X+9V/wCTGrV8v6icL4i/5Ofz9WtPrfyG7llAPoSxgLgPzIAVjmU7qpUI9tfT9Cqwb9XXOyXSf1/U230RR1hutvTPKWm1oeTRQSuOh9VDJC0/7b2ho/UqQYZI5o2yRPa9jgC1zTsEfkfsq2dU63qaaLau6u1fJJP8H0QoSANkgLQ+R9XunWAsOrX+T1XTtOnR1mvnIP2JYCAfyJCQrnY9QW2LLYVrc2kb4ijrDdbOmeVstrQcnhgld4H1UMkLf997Q0f1UgwyRzRtlie17HAOa5p2CD7j8ksqnW9TTQrurs/2STPqiIoG0IiIAiIgOPdVl+Lvn2QhyEXB8XYfXr/IE+QcxxBlLt9sZI/1QBsj32Pt5s0fHlUp+J0b675Meo1V8f8AosVl6TXGd/zLelsqPWbJQx9RettI37pv8N1K5g6+S5jkrsVqxGJBTqFrPlAjYD3OBJOj5AA0fGyvL1X+Havh+O2c1xHI3LBqRmWalb7XOewDbixzQPIAJ0Qd+dHegbQt/hH8l0miZLE+KQBzHtLXNPoQRohRXqeQrOXLr2+hP+U4zr4qPfuQB8G/Kcpk8PluPZCaWxXxnyn1Hv2TG1/cDHs+wLdge2z7ALWvij55l8zzAdO8FLK2rE+OOzHEdG1O/RDCfdo20a9CSd70NWN4pxfj/FqDqPHsVXx8D3d72xA7eda24nyTr7kqmvUPLHA/EJk868uLX0GbFn5Rf29/Y8OA3o63rW9HX2XXhuGRlTsjHwtpfc4c1WY2JCqUvL039iaeGfDVxqti4n8ou3L2Qe3crK8vy4YyR5DdDZ16bJG/sFqfWjoPW4xgJ+UcQu3HR0gJbFWd4c9jAfL43gA/h9SDs6BIPjRyA+KiQDX+Q7f/AHM//ksdyf4k3ZvjeTw54a2EXqktYyftLu7A9hbvXyxvW966P+Uu+0fdUo+JYa695X+9V/wCTGrV8v6icL4i/5Ofz9WtPrfyG7llAPoSxgLgPzIAVjmU7qpUI9tfT9Cqwb9XXOyXSf1/U230RR1hutvTPKWm1oeTRQSuOh9VDJC0/7b2ho/UqQYZI5o2yRPa9jgC1zTsEfkfsq2dU63qaaLau6u1fJJP8H0QoSANkgLQ+R9XunWAsOrX+T1XTtOnR1mvnIP2JYCAfyJCQrnY9QW2LLYVrc2kb4ijrDdbOmeVstrQcnhgld4H1UMkLf997Q0f1UgwyRzRtlie17HAOa5p2CD7j8ksqnW9TTQrurs/2STPqiIoG0IiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgP/9k=" alt="Cerba">
+    <img src="data:image/jpeg;base64,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" alt="Cerba">
     <div class="topbar-brand">
       Cerba Destilaria
       <span>Sistema de Fretes</span>
@@ -803,251 +776,273 @@
 
 <div class="container">
 
-  <div class="page-header">
+<div class="page-header">
+  <div>
+    <div class="page-title">Calculadora de <span>Frete</span></div>
+    <div class="page-subtitle">Selecione o destino e o veículo — o valor é calculado automaticamente</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('calc',this)">🧮 Calcular</button>
+  <button class="tab-btn" onclick="showTab('cities',this)">🗺️ Cidades</button>
+  <button class="tab-btn" onclick="showTab('viagens',this);renderViagens()">🚛 Viagens</button>
+  <button class="tab-btn" onclick="showTab('historico',this)">🕓 Histórico</button>
+  <button class="tab-btn" onclick="showTab('config',this)">⚙️ Config</button>
+</div>
+
+<!-- ===== ABA CALCULAR ===== -->
+<div id="tab-calc" class="tab-panel active">
+
+  <div class="veh-selector">
+    <button class="veh-btn active-truck" id="btn-truck" onclick="selectVeh('truck')">
+      <div class="veh-icon">🚛</div>
+      <div class="veh-name">Truck</div>
+      <div class="veh-spec" id="spec-truck">1,5 km/L · 6 eixos</div>
+    </button>
+    <button class="veh-btn" id="btn-carreta" onclick="selectVeh('carreta')">
+      <div class="veh-icon">🚚</div>
+      <div class="veh-name">Carreta</div>
+      <div class="veh-spec" id="spec-carreta">1,2 km/L · 8 eixos</div>
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cidade de Destino</div>
+
+    <div class="state-filter" id="stateFilter">
+      <button class="sf-btn active" onclick="filterState('TODOS',this)">Todos</button>
+      <button class="sf-btn" onclick="filterState('SP',this)">SP</button>
+      <button class="sf-btn" onclick="filterState('MG',this)">MG</button>
+      <button class="sf-btn" onclick="filterState('PR',this)">PR</button>
+      <button class="sf-btn" onclick="filterState('GO',this)">GO</button>
+      <button class="sf-btn" onclick="filterState('SC',this)">SC</button>
+    </div>
+
+    <div class="search-wrap">
+      <label>Buscar cidade</label>
+      <input type="text" id="searchInput" placeholder="Digite o nome da cidade..." autocomplete="off"
+             oninput="onSearch()" onkeydown="onKey(event)">
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <div class="selected-city" id="selectedCity">
+      <div>
+        <div class="sc-name" id="scName">—</div>
+        <div class="sc-dist" id="scDist">—</div>
+        <div class="sc-hint" id="scHint"></div>
+      </div>
+      <button class="btn-clear" onclick="clearCity()" title="Limpar">✕</button>
+    </div>
+
+    <div class="tanque-row">
+      <div class="field">
+        <label>Valor do Pedágio (ida)</label>
+        <div class="input-prefix">
+          <span>R$</span>
+          <input type="number" id="inputPedagio" placeholder="0,00" min="0" step="0.01" value="0" oninput="recalc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Quantidade de Tanques</label>
+        <input type="number" id="inputTanques" placeholder="1" min="1" step="1" value="1" oninput="recalc()">
+      </div>
+    </div>
+
+    <div class="formula" id="formulaBox">Selecione uma cidade para ver o cálculo</div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-header">
+      <div class="result-label">Valor do Frete</div>
+      <div class="result-value" id="rValor">—</div>
+      <div class="result-unit" id="rInfo">—</div>
+    </div>
+    <div class="result-accent"></div>
+    <div class="breakdown">
+      <div class="bd-title">Detalhamento do Cálculo</div>
+      <div class="bd-item"><span class="bd-l">Distância ida</span><span class="bd-v" id="b0">—</span></div>
+      <div class="bd-item"><span class="bd-l">Distância ida e volta</span><span class="bd-v" id="b1">—</span></div>
+      <div class="bd-item"><span class="bd-l">Litros consumidos</span><span class="bd-v" id="b2">—</span></div>
+      <div class="bd-item"><span class="bd-l">Custo diesel</span><span class="bd-v" id="b3">—</span></div>
+      <div class="bd-item"><span class="bd-l">Custo pedágio (valor × eixos)</span><span class="bd-v" id="b4">—</span></div>
+      <div class="bd-item"><span class="bd-l">Total bruto</span><span class="bd-v" id="b5">—</span></div>
+      <div class="bd-item"><span class="bd-l">Por tanque</span><span class="bd-v" id="b6">—</span></div>
+      <div class="bd-item"><span class="bd-l">+ Margem (R$ 0,04)</span><span class="bd-v green" id="b7">—</span></div>
+      <div class="bd-item"><span class="bd-l" style="font-weight:800;color:var(--blue)">Frete Final</span><span class="bd-v total" id="b8">—</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== ABA CIDADES ===== -->
+<div id="tab-cities" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Tabela de Distâncias — Origem: Piracicaba SP</div>
+    <input type="text" class="search-bar" placeholder="Filtrar cidade ou estado..." oninput="filterTable(this.value)">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cidade</th>
+            <th>UF</th>
+            <th>Dist. Ida</th>
+            <th>Ida + Volta</th>
+          </tr>
+        </thead>
+        <tbody id="citiesTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA CONFIG ===== -->
+<div id="tab-config" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Truck 🚛</div>
+    <div class="config-row">
+      <div><div class="config-label">Consumo (km/L)</div></div>
+      <input type="number" class="config-input" id="cfg-tkml" value="1.5" step="0.1" min="0.1">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Eixos por pedágio</div></div>
+      <input type="number" class="config-input" id="cfg-teixos" value="6" step="1" min="1">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Carreta 🚚</div>
+    <div class="config-row">
+      <div><div class="config-label">Consumo (km/L)</div></div>
+      <input type="number" class="config-input" id="cfg-ckml" value="1.2" step="0.1" min="0.1">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Eixos por pedágio</div></div>
+      <input type="number" class="config-input" id="cfg-ceixos" value="8" step="1" min="1">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Parâmetros Gerais</div>
+    <div class="config-row">
+      <div><div class="config-label">Preço do diesel (R$/L)</div></div>
+      <input type="number" class="config-input" id="cfg-diesel" value="5.60" step="0.01" min="0.01">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Margem adicional (R$)</div></div>
+      <input type="number" class="config-input" id="cfg-margem" value="0.04" step="0.01" min="0">
+    </div>
+  </div>
+  <button class="btn-save" onclick="saveConfig()">💾 Salvar Configurações</button>
+</div>
+
+
+<!-- ===== ABA HISTÓRICO ===== -->
+<div id="tab-historico" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Últimos Fretes Calculados</div>
+    <div id="historicoList"><p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p></div>
+    <button class="btn-save" style="margin-top:16px;background:var(--red);box-shadow:none" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
+  </div>
+</div>
+
+
+<!-- ===== ABA VIAGENS ===== -->
+<div id="tab-viagens" class="tab-panel">
+  <!-- HEADER PAINEL -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px">
     <div>
-      <div class="page-title">Calculadora de <span>Frete</span></div>
-      <div class="page-subtitle">Selecione o destino e o veículo — o valor é calculado automaticamente</div>
+      <div style="font-size:22px;font-weight:800;color:var(--blue);letter-spacing:-0.5px">🚛 Painel de Viagens</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">Monitoramento em tempo real · Piracicaba — SP</div>
     </div>
+    <button class="btn-calc" style="width:auto;padding:13px 24px;font-size:15px;border-radius:12px" onclick="abrirModalViagem()">+ Nova Viagem</button>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('calc',this)">🧮 Calcular</button>
-    <button class="tab-btn" onclick="showTab('cadastrar',this)">➕ Cadastrar</button>
-    <button class="tab-btn" onclick="showTab('cities',this)">🗺️ Cidades</button>
-    <button class="tab-btn" onclick="showTab('historico',this)">🕓 Histórico</button>
-    <button class="tab-btn" onclick="showTab('config',this)">⚙️ Config</button>
+  <!-- CONTADORES -->
+  <div id="viagensContadores" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px"></div>
+
+  <!-- FILTROS STATUS -->
+  <div class="state-filter" style="margin-bottom:20px">
+    <button class="sf-btn active" onclick="filtrarViagens('TODOS',this)">Todas</button>
+    <button class="sf-btn" onclick="filtrarViagens('rota',this)">🟠 Em Rota</button>
+    <button class="sf-btn" onclick="filtrarViagens('aguardando',this)">🔵 Aguardando</button>
+    <button class="sf-btn" onclick="filtrarViagens('entregue',this)">🟢 Entregues</button>
   </div>
 
-  <!-- ===== ABA CALCULAR ===== -->
-  <div id="tab-calc" class="tab-panel active">
+  <div class="viagens-grid" id="viagensList"></div>
+</div>
 
-    <div class="veh-selector">
-      <button class="veh-btn active-truck" id="btn-truck" onclick="selectVeh('truck')">
-        <div class="veh-icon">🚛</div>
-        <div class="veh-name">Truck</div>
-        <div class="veh-spec" id="spec-truck">1,5 km/L · 6 eixos</div>
-      </button>
-      <button class="veh-btn" id="btn-carreta" onclick="selectVeh('carreta')">
-        <div class="veh-icon">🚚</div>
-        <div class="veh-name">Carreta</div>
-        <div class="veh-spec" id="spec-carreta">1,2 km/L · 8 eixos</div>
-      </button>
+<!-- MODAL NOVA/EDITAR VIAGEM -->
+<div class="modal-overlay" id="modalViagem">
+  <div class="modal">
+    <div class="modal-title" id="modalViagemTitle">🚛 Nova Viagem</div>
+    <div class="modal-field">
+      <label>Nome do Motorista</label>
+      <input type="text" id="mv-motorista" placeholder="Ex: João Silva">
     </div>
-
-    <div class="card">
-      <div class="card-title">Cidade de Destino</div>
-
-      <div class="state-filter" id="stateFilter">
-        <button class="sf-btn active" onclick="filterState('TODOS',this)">Todos</button>
-        <button class="sf-btn" onclick="filterState('SP',this)">SP</button>
-        <button class="sf-btn" onclick="filterState('MG',this)">MG</button>
-        <button class="sf-btn" onclick="filterState('PR',this)">PR</button>
-        <button class="sf-btn" onclick="filterState('GO',this)">GO</button>
-        <button class="sf-btn" onclick="filterState('SC',this)">SC</button>
-        <button class="sf-btn" onclick="filterState('CUSTOM',this)">⭐ Cadastradas</button>
-      </div>
-
-      <div class="search-wrap">
-        <label>Buscar cidade</label>
-        <input type="text" id="searchInput" placeholder="Digite o nome da cidade..." autocomplete="off"
-               oninput="onSearch()" onkeydown="onKey(event)">
-        <div class="dropdown" id="dropdown"></div>
-      </div>
-
-      <div class="selected-city" id="selectedCity">
-        <div>
-          <div class="sc-name" id="scName">—</div>
-          <div class="sc-dist" id="scDist">—</div>
-          <div class="sc-hint" id="scHint"></div>
-        </div>
-        <button class="btn-clear" onclick="clearCity()" title="Limpar">✕</button>
-      </div>
-
-      <div class="tanque-row">
-        <div class="field">
-          <label>Valor do Pedágio (ida)</label>
-          <div class="input-prefix">
-            <span>R$</span>
-            <input type="number" id="inputPedagio" placeholder="0,00" min="0" step="0.01" value="0" oninput="recalc()">
-          </div>
-        </div>
-        <div class="field">
-          <label>Quantidade de Tanques</label>
-          <input type="number" id="inputTanques" placeholder="1" min="1" step="1" value="1" oninput="recalc()">
-        </div>
-      </div>
-
-      <div class="formula" id="formulaBox">Selecione uma cidade para ver o cálculo</div>
+    <div class="modal-field">
+      <label>Placa do Caminhão</label>
+      <input type="text" id="mv-placa" placeholder="Ex: ABC-1234" style="text-transform:uppercase">
     </div>
-
-    <div class="result-box" id="resultBox">
-      <div class="result-header">
-        <div class="result-label">Valor do Frete</div>
-        <div class="result-value" id="rValor">—</div>
-        <div class="result-unit" id="rInfo">—</div>
-      </div>
-      <div class="result-accent"></div>
-      <div class="breakdown">
-        <div class="bd-title">Detalhamento do Cálculo</div>
-        <div class="bd-item"><span class="bd-l">Distância ida</span><span class="bd-v" id="b0">—</span></div>
-        <div class="bd-item"><span class="bd-l">Distância ida e volta</span><span class="bd-v" id="b1">—</span></div>
-        <div class="bd-item"><span class="bd-l">Litros consumidos</span><span class="bd-v" id="b2">—</span></div>
-        <div class="bd-item"><span class="bd-l">Custo diesel</span><span class="bd-v" id="b3">—</span></div>
-        <div class="bd-item"><span class="bd-l">Custo pedágio (valor × eixos)</span><span class="bd-v" id="b4">—</span></div>
-        <div class="bd-item"><span class="bd-l">Total bruto</span><span class="bd-v" id="b5">—</span></div>
-        <div class="bd-item"><span class="bd-l">Por tanque</span><span class="bd-v" id="b6">—</span></div>
-        <div class="bd-item"><span class="bd-l">+ Margem (R$ 0,04)</span><span class="bd-v green" id="b7">—</span></div>
-        <div class="bd-item"><span class="bd-l" style="font-weight:800;color:var(--blue)">Frete Final</span><span class="bd-v total" id="b8">—</span></div>
-      </div>
+    <div class="modal-field">
+      <label>Tipo de Veículo</label>
+      <select id="mv-tipo">
+        <option value="truck">🚛 Truck</option>
+        <option value="carreta">🚚 Carreta</option>
+      </select>
     </div>
-
-  </div>
-
-  <!-- ===== ABA CADASTRAR ===== -->
-  <div id="tab-cadastrar" class="tab-panel">
-
-    <div class="card">
-      <div class="card-title">Cadastrar Nova Cidade</div>
-
-      <div class="info-box">
-        💡 Cidades cadastradas ficam salvas no dispositivo e aparecem com destaque ⭐ nas buscas.<br>
-        O pedágio informado aqui é preenchido automaticamente ao selecionar a cidade.
-      </div>
-
-      <div class="form-grid" style="margin-bottom:16px">
-        <div class="form-field">
-          <label>Nome da Cidade</label>
-          <input type="text" class="form-input" id="cad-nome" placeholder="Ex: Campinas" autocomplete="off">
-        </div>
-        <div class="form-field">
-          <label>Estado (UF)</label>
-          <select class="form-select" id="cad-uf">
-            <option value="">Selecione...</option>
-            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
-            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
-            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
-            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
-            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
-            <option selected>SP</option><option>SE</option><option>TO</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-grid-3" style="margin-bottom:16px">
-        <div class="form-field">
-          <label>Distância Ida (km)</label>
-          <input type="number" id="cad-km" placeholder="Ex: 150" min="1" step="1">
-        </div>
-        <div class="form-field">
-          <label>Pedágio Truck (R$)</label>
-          <div class="input-prefix">
-            <span>R$</span>
-            <input type="number" id="cad-ped-truck" placeholder="0,00" min="0" step="0.01" value="0">
-          </div>
-        </div>
-        <div class="form-field">
-          <label>Pedágio Carreta (R$)</label>
-          <div class="input-prefix">
-            <span>R$</span>
-            <input type="number" id="cad-ped-carreta" placeholder="0,00" min="0" step="0.01" value="0">
-          </div>
-        </div>
-      </div>
-
-      <button class="btn-add" onclick="cadastrarCidade()">⭐ Salvar Cidade</button>
+    <div class="modal-field">
+      <label>Cidade de Destino</label>
+      <select id="mv-destino">
+        <option value="">Selecione...</option>
+      </select>
     </div>
-
-    <div class="card">
-      <div class="card-title">Cidades Cadastradas</div>
-      <div class="cad-list" id="cadList">
-        <div class="empty-state">
-          <div class="empty-icon">🏙️</div>
-          <p>Nenhuma cidade cadastrada ainda.<br>Use o formulário acima para adicionar.</p>
-        </div>
-      </div>
+    <div class="modal-field">
+      <label>Carga</label>
+      <select id="mv-carga">
+        <option value="carregado">📦 Carregado — 60 km/h</option>
+        <option value="vazio">🔓 Vazio — 80 km/h</option>
+      </select>
     </div>
-
-  </div>
-
-  <!-- ===== ABA CIDADES ===== -->
-  <div id="tab-cities" class="tab-panel">
-    <div class="card">
-      <div class="card-title">Tabela de Distâncias — Origem: Piracicaba SP</div>
-      <input type="text" class="search-bar" placeholder="Filtrar cidade ou estado..." oninput="filterTable(this.value)">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Cidade</th>
-              <th>UF</th>
-              <th>Dist. Ida</th>
-              <th>Ida + Volta</th>
-              <th>Pedágio</th>
-            </tr>
-          </thead>
-          <tbody id="citiesTable"></tbody>
-        </table>
-      </div>
+    <div class="modal-field">
+      <label>Status</label>
+      <select id="mv-status">
+        <option value="aguardando">🔵 Aguardando</option>
+        <option value="rota">🟠 Em Rota</option>
+        <option value="entregue">🟢 Entregue</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="fecharModalViagem()">Cancelar</button>
+      <button class="btn-modal-save" onclick="salvarViagem()">💾 Salvar</button>
     </div>
   </div>
+</div>
 
-  <!-- ===== ABA CONFIG ===== -->
-  <div id="tab-config" class="tab-panel">
-    <div class="card">
-      <div class="card-title">Truck 🚛</div>
-      <div class="config-row">
-        <div><div class="config-label">Consumo (km/L)</div></div>
-        <input type="number" class="config-input" id="cfg-tkml" value="1.5" step="0.1" min="0.1">
-      </div>
-      <div class="config-row">
-        <div><div class="config-label">Eixos por pedágio</div></div>
-        <input type="number" class="config-input" id="cfg-teixos" value="6" step="1" min="1">
-      </div>
+<!-- LOGIN ADMIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">Área do Administrador</div>
+    <div class="login-sub">Digite a senha para gerenciar viagens</div>
+    <div class="login-error" id="loginError">Senha incorreta. Tente novamente.</div>
+    <div class="modal-field" style="text-align:left">
+      <label>Senha</label>
+      <input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter') tentarLogin()">
     </div>
-    <div class="card">
-      <div class="card-title">Carreta 🚚</div>
-      <div class="config-row">
-        <div><div class="config-label">Consumo (km/L)</div></div>
-        <input type="number" class="config-input" id="cfg-ckml" value="1.2" step="0.1" min="0.1">
-      </div>
-      <div class="config-row">
-        <div><div class="config-label">Eixos por pedágio</div></div>
-        <input type="number" class="config-input" id="cfg-ceixos" value="8" step="1" min="1">
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">Parâmetros Gerais</div>
-      <div class="config-row">
-        <div><div class="config-label">Preço do diesel (R$/L)</div></div>
-        <input type="number" class="config-input" id="cfg-diesel" value="5.60" step="0.01" min="0.01">
-      </div>
-      <div class="config-row">
-        <div><div class="config-label">Margem adicional (R$)</div></div>
-        <input type="number" class="config-input" id="cfg-margem" value="0.04" step="0.01" min="0">
-      </div>
-    </div>
-    <button class="btn-save" onclick="saveConfig()">💾 Salvar Configurações</button>
+    <button class="btn-modal-save" style="width:100%;margin-top:4px" onclick="tentarLogin()">Entrar</button>
+    <button class="btn-modal-cancel" style="width:100%;margin-top:10px" onclick="fecharLogin()">Cancelar</button>
   </div>
-
-  <!-- ===== ABA HISTÓRICO ===== -->
-  <div id="tab-historico" class="tab-panel">
-    <div class="card">
-      <div class="card-title">Últimos Fretes Calculados</div>
-      <div id="historicoList"><p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p></div>
-      <button class="btn-save" style="margin-top:16px;background:var(--red);box-shadow:none" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
-    </div>
-  </div>
+</div>
 
 </div><!-- /container -->
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast">✓ Configurações salvas!</div>
 
 <script>
 // =====================================================
-// BASE DE CIDADES PADRÃO
+// BASE DE CIDADES — distância ida (km) de Piracicaba
+// Fonte: DER-SP, DNIT, rotamapas.com.br
 // =====================================================
-const CIDADES_PADRAO = [
+const CIDADES = [
   {n:"Adamantina", s:"SP", d:439},
   {n:"Alfenas", s:"MG", d:440},
   {n:"Altinópolis", s:"SP", d:255},
@@ -1309,23 +1304,8 @@ const CIDADES_PADRAO = [
   {n:"Águas de São Pedro", s:"SP", d:38}
 ];
 
-// =====================================================
-// CIDADES CUSTOMIZADAS (localStorage)
-// Formato: {n, s, d, pedTruck, pedCarreta, custom:true}
-// =====================================================
-function loadCidadesCustom(){
-  try{ const s=localStorage.getItem('frete_cidades_custom'); return s?JSON.parse(s):[]; }catch{ return []; }
-}
-function saveCidadesCustom(arr){
-  try{ localStorage.setItem('frete_cidades_custom',JSON.stringify(arr)); }catch{}
-}
-
-// Lista unificada: padrão + custom (custom aparecem primeiro)
-function getAllCidades(){
-  const custom = loadCidadesCustom();
-  const padrao = CIDADES_PADRAO;
-  return [...custom, ...padrao].sort((a,b)=>a.n.localeCompare(b.n,'pt'));
-}
+// sort alphabetical
+CIDADES.sort((a,b)=>a.n.localeCompare(b.n,'pt'));
 
 // =====================================================
 // CONFIG
@@ -1345,7 +1325,8 @@ function saveConfig(){
   cfg.margem       = parseFloat(document.getElementById('cfg-margem').value)||0.04;
   try{ localStorage.setItem('frete_v4',JSON.stringify(cfg)); }catch{}
   updateSpecs(); recalc();
-  showToast('✓ Configurações salvas!', 'blue');
+  const t=document.getElementById('toast');
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
 }
 
 function syncCfgInputs(){
@@ -1363,21 +1344,9 @@ function updateSpecs(){
 }
 
 // =====================================================
-// TOAST
-// =====================================================
-function showToast(msg, type='blue'){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + type;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2400);
-}
-
-// =====================================================
 // STATE
 // =====================================================
 let veiculo='truck', selectedIdx=null, stateFilter='TODOS', hiIdx=-1;
-// selectedIdx agora é índice dentro de getAllCidades()
 
 function showTab(name,btn){
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
@@ -1386,7 +1355,6 @@ function showTab(name,btn){
   btn.classList.add('active');
   if(name==='cities') renderTable('');
   if(name==='historico') renderHistorico();
-  if(name==='cadastrar') renderCadList();
 }
 
 function selectVeh(v){
@@ -1407,11 +1375,7 @@ function filterState(s,btn){
 // SEARCH / DROPDOWN
 // =====================================================
 function getFiltered(q){
-  const all = getAllCidades();
-  let list;
-  if(stateFilter==='TODOS') list = all;
-  else if(stateFilter==='CUSTOM') list = all.filter(c=>c.custom);
-  else list = all.filter(c=>c.s===stateFilter);
+  let list = stateFilter==='TODOS' ? CIDADES : CIDADES.filter(c=>c.s===stateFilter);
   if(q) list = list.filter(c=>c.n.toLowerCase().includes(q.toLowerCase()));
   return list;
 }
@@ -1420,16 +1384,11 @@ function onSearch(){
   const q = document.getElementById('searchInput').value.trim();
   const dd = document.getElementById('dropdown');
   hiIdx=-1;
-  const all = getAllCidades();
   const matches = getFiltered(q).slice(0,12);
   if(!matches.length){ dd.classList.remove('open'); return; }
   dd.innerHTML = matches.map((c,i)=>`
-    <div class="dd-item" data-i="${i}" onmousedown="pickCityByObj(${JSON.stringify(c).replace(/"/g,'&quot;')})">
-      <span>
-        <span class="dd-city">${c.n}</span>
-        <span class="dd-state">${c.s}</span>
-        ${c.custom ? '<span class="dd-custom">⭐</span>' : ''}
-      </span>
+    <div class="dd-item" data-i="${i}" onmousedown="pickCity(${CIDADES.indexOf(c)})">
+      <span><span class="dd-city">${c.n}</span><span class="dd-state">${c.s}</span></span>
       <span class="dd-dist">${c.d} km ida</span>
     </div>
   `).join('');
@@ -1454,7 +1413,7 @@ document.addEventListener('click',e=>{
 });
 
 // =====================================================
-// PEDÁGIO SALVO POR CIDADE (legado, mantido para compat.)
+// PEDÁGIO SALVO POR CIDADE
 // =====================================================
 function loadPedagios(){
   try{ const s=localStorage.getItem('frete_pedagogios'); return s?JSON.parse(s):{}; }catch{ return {}; }
@@ -1472,6 +1431,7 @@ function loadHistorico(){
 function saveHistorico(arr){
   try{ localStorage.setItem('frete_historico',JSON.stringify(arr)); }catch{}
 }
+
 function addHistorico(entry){
   let h = loadHistorico();
   h.unshift(entry);
@@ -1503,14 +1463,14 @@ function renderHistorico(){
 function reuseHistorico(i){
   const h = loadHistorico();
   const e = h[i];
-  const all = getAllCidades();
-  const c = all.find(c=>c.n===e.cidade && c.s===e.estado);
-  if(!c) return;
+  const idx = CIDADES.findIndex(c=>c.n===e.cidade && c.s===e.estado);
+  if(idx<0) return;
+  // switch to calc tab
   showTab('calc', document.querySelectorAll('.tab-btn')[0]);
   selectVeh(e.veiculoKey);
   document.getElementById('inputPedagio').value = e.pedagio;
   document.getElementById('inputTanques').value = e.tanques;
-  pickCityByObj(c);
+  pickCity(idx);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1521,54 +1481,31 @@ function limparHistorico(){
 // =====================================================
 // PICK / CLEAR CITY
 // =====================================================
-let currentCity = null;
-
-function pickCityByObj(c){
-  // c pode vir como string (do HTML) ou objeto
-  if(typeof c === 'string'){
-    try{ c = JSON.parse(c); }catch{ return; }
-  }
-  currentCity = c;
+function pickCity(idx){
+  selectedIdx=idx;
+  const c=CIDADES[idx];
   document.getElementById('searchInput').value=`${c.n} - ${c.s}`;
   document.getElementById('dropdown').classList.remove('open');
-  document.getElementById('scName').textContent=`${c.n} — ${c.s}${c.custom?' ⭐':''}`;
+  document.getElementById('scName').textContent=`${c.n} — ${c.s}`;
   document.getElementById('scDist').textContent=`${c.d} km ida · ${c.d*2} km ida+volta`;
 
+  // Preenche pedágio salvo se existir
+  const pedagogios = loadPedagios();
+  const key = `${c.n}-${c.s}`;
   const hint = document.getElementById('scHint');
-
-  // Preenche pedágio: prioridade é o pedágio cadastrado na cidade custom
-  if(c.custom){
-    const ped = veiculo === 'truck' ? (c.pedTruck||0) : (c.pedCarreta||0);
-    document.getElementById('inputPedagio').value = ped;
-    if(ped > 0){
-      hint.textContent = `⭐ Pedágio cadastrado (${veiculo==='truck'?'Truck':'Carreta'}): R$ ${ped.toFixed(2).replace('.',',')}`;
-    } else {
-      hint.textContent = '⭐ Cidade cadastrada — pedágio não informado';
-    }
+  if(pedagogios[key] !== undefined){
+    document.getElementById('inputPedagio').value = pedagogios[key];
+    hint.textContent = `⚡ Pedágio salvo: R$ ${parseFloat(pedagogios[key]).toFixed(2).replace('.',',')}`;
   } else {
-    const pedagogios = loadPedagios();
-    const key = `${c.n}-${c.s}`;
-    if(pedagogios[key] !== undefined){
-      document.getElementById('inputPedagio').value = pedagogios[key];
-      hint.textContent = `⚡ Pedágio salvo: R$ ${parseFloat(pedagogios[key]).toFixed(2).replace('.',',')}`;
-    } else {
-      document.getElementById('inputPedagio').value = 0;
-      hint.textContent = '';
-    }
+    hint.textContent = '';
   }
 
   document.getElementById('selectedCity').classList.add('visible');
   recalc();
 }
 
-// Mantém compatibilidade com histórico antigo que usa índice
-function pickCity(idx){
-  const all = getAllCidades();
-  if(idx < all.length) pickCityByObj(all[idx]);
-}
-
 function clearCity(){
-  currentCity=null;
+  selectedIdx=null;
   document.getElementById('searchInput').value='';
   document.getElementById('selectedCity').classList.remove('visible');
   document.getElementById('resultBox').classList.remove('visible');
@@ -1582,8 +1519,8 @@ function clearCity(){
 function fmt(n){ return 'R$ '+n.toFixed(2).replace('.',','); }
 
 function recalc(){
-  if(!currentCity) return;
-  const c  = currentCity;
+  if(selectedIdx===null) return;
+  const c  = CIDADES[selectedIdx];
   const v  = cfg[veiculo];
   const dist   = c.d;
   const dist2  = dist*2;
@@ -1599,14 +1536,16 @@ function recalc(){
   const porTanque   = bruto / tanques;
   const final       = (porTanque / capacidade) + margem;
 
-  // Salva pedágio desta cidade (para cidades padrão)
-  if(!c.custom && pedagio > 0){
+  // Salva pedágio desta cidade automaticamente
+  if(pedagio > 0){
     const pedagogios = loadPedagios();
     pedagogios[`${c.n}-${c.s}`] = pedagio;
     savePedagios(pedagogios);
-    document.getElementById('scHint').textContent = `⚡ Pedágio salvo: R$ ${pedagio.toFixed(2).replace('.',',')}`;
+    const hint = document.getElementById('scHint');
+    hint.textContent = `⚡ Pedágio salvo: R$ ${pedagio.toFixed(2).replace('.',',')}`;
   }
 
+  // formula strip
   document.getElementById('formulaBox').innerHTML =
     `<span class="fy">(${dist2} km ÷ ${v.kml} km/L) × R$${cfg.diesel.toFixed(2)}</span> = ${fmt(custoDiesel)} <em style="opacity:.6">(diesel)</em><br>`+
     `<span class="fb">R$${pedagio.toFixed(2)} × ${v.eixos} eixos</span> = ${fmt(custoPed)} <em style="opacity:.6">(pedágio)</em><br>`+
@@ -1628,6 +1567,7 @@ function recalc(){
 
   document.getElementById('resultBox').classList.add('visible');
 
+  // Salva no histórico
   const now = new Date();
   const data = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
   addHistorico({
@@ -1639,134 +1579,297 @@ function recalc(){
 }
 
 // =====================================================
-// CADASTRAR CIDADE
-// =====================================================
-function cadastrarCidade(){
-  const nome = document.getElementById('cad-nome').value.trim();
-  const uf   = document.getElementById('cad-uf').value;
-  const km   = parseInt(document.getElementById('cad-km').value)||0;
-  const pedT = parseFloat(document.getElementById('cad-ped-truck').value)||0;
-  const pedC = parseFloat(document.getElementById('cad-ped-carreta').value)||0;
-
-  if(!nome){ alert('Informe o nome da cidade.'); return; }
-  if(!uf)  { alert('Selecione o estado (UF).'); return; }
-  if(km < 1){ alert('Informe a distância de ida em km.'); return; }
-
-  const custom = loadCidadesCustom();
-
-  // Verifica duplicata
-  const dup = custom.find(c => c.n.toLowerCase()===nome.toLowerCase() && c.s===uf);
-  if(dup){
-    if(!confirm(`"${nome} - ${uf}" já está cadastrado. Deseja atualizar?`)) return;
-    dup.d = km; dup.pedTruck = pedT; dup.pedCarreta = pedC;
-    saveCidadesCustom(custom);
-    showToast('✓ Cidade atualizada!', 'teal');
-    renderCadList();
-    return;
-  }
-
-  custom.push({ n: nome, s: uf, d: km, pedTruck: pedT, pedCarreta: pedC, custom: true });
-  saveCidadesCustom(custom);
-
-  // Limpa form
-  document.getElementById('cad-nome').value = '';
-  document.getElementById('cad-km').value = '';
-  document.getElementById('cad-ped-truck').value = 0;
-  document.getElementById('cad-ped-carreta').value = 0;
-  document.getElementById('cad-uf').value = 'SP';
-
-  showToast(`⭐ ${nome} - ${uf} cadastrada!`, 'teal');
-  renderCadList();
-}
-
-function renderCadList(){
-  const custom = loadCidadesCustom();
-  const el = document.getElementById('cadList');
-  if(!custom.length){
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🏙️</div><p>Nenhuma cidade cadastrada ainda.<br>Use o formulário acima para adicionar.</p></div>`;
-    return;
-  }
-  const sorted = [...custom].sort((a,b)=>a.n.localeCompare(b.n,'pt'));
-  el.innerHTML = sorted.map((c,i)=>`
-    <div class="cad-item">
-      <div class="cad-info">
-        <div class="cad-name">⭐ ${c.n} <span style="font-size:12px;font-weight:600;color:var(--muted)">— ${c.s}</span></div>
-        <div class="cad-meta">
-          <span>📍 ${c.d} km ida · ${c.d*2} km ida+volta</span>
-          <span class="ped">🚛 Truck: R$ ${(c.pedTruck||0).toFixed(2)}</span>
-          <span class="ped">🚚 Carreta: R$ ${(c.pedCarreta||0).toFixed(2)}</span>
-        </div>
-      </div>
-      <div class="cad-actions">
-        <button class="btn-use" onclick="usarCidadeCad(${custom.indexOf(c)})">↗ Usar</button>
-        <button class="btn-del" onclick="excluirCidadeCad(${custom.indexOf(c)})" title="Excluir">🗑</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function usarCidadeCad(idx){
-  const custom = loadCidadesCustom();
-  const c = custom[idx];
-  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
-  pickCityByObj(c);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-
-function excluirCidadeCad(idx){
-  const custom = loadCidadesCustom();
-  const c = custom[idx];
-  if(!confirm(`Excluir "${c.n} - ${c.s}"?`)) return;
-  custom.splice(idx, 1);
-  saveCidadesCustom(custom);
-  showToast('🗑 Cidade removida', 'red');
-  renderCadList();
-}
-
-// =====================================================
 // TABELA DE CIDADES
 // =====================================================
 function renderTable(q){
-  const tbody = document.getElementById('citiesTable');
-  const all   = getAllCidades();
-  const list  = q
-    ? all.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.s.toLowerCase().includes(q.toLowerCase()))
-    : all;
-
-  const pedagogios = loadPedagios();
-
-  tbody.innerHTML = list.map(c=>{
-    let pedStr = '—';
-    if(c.custom){
-      const t = c.pedTruck||0, cr = c.pedCarreta||0;
-      pedStr = `T: R$${t.toFixed(2)} / C: R$${cr.toFixed(2)}`;
-    } else {
-      const key = `${c.n}-${c.s}`;
-      if(pedagogios[key] !== undefined) pedStr = `R$ ${parseFloat(pedagogios[key]).toFixed(2)}`;
-    }
-    return `
-      <tr onclick="goCalc(${JSON.stringify(c).replace(/"/g,'&quot;')})">
-        <td class="city-name">
-          ${c.n}
-          ${c.custom ? '<span class="custom-badge">⭐</span>' : ''}
-        </td>
-        <td><span class="state-badge">${c.s}</span></td>
-        <td class="dist-val">${c.d} km</td>
-        <td class="dist-val">${c.d*2} km</td>
-        <td class="pedagio-val">${pedStr}</td>
-      </tr>
-    `;
-  }).join('');
+  const tbody=document.getElementById('citiesTable');
+  const list = q ? CIDADES.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.s.toLowerCase().includes(q.toLowerCase())) : CIDADES;
+  tbody.innerHTML = list.map(c=>`
+    <tr onclick="goCalc(${CIDADES.indexOf(c)})">
+      <td class="city-name">${c.n}</td>
+      <td><span class="state-badge">${c.s}</span></td>
+      <td class="dist-val">${c.d} km</td>
+      <td class="dist-val">${c.d*2} km</td>
+    </tr>
+  `).join('');
 }
 
 function filterTable(q){ renderTable(q); }
 
-function goCalc(c){
-  if(typeof c === 'string') try{ c=JSON.parse(c); }catch{ return; }
+function goCalc(idx){
   showTab('calc', document.querySelectorAll('.tab-btn')[0]);
-  pickCityByObj(c);
+  pickCity(idx);
   window.scrollTo({top:0,behavior:'smooth'});
 }
+
+// =====================================================
+// VIAGENS — Painel de Monitoramento
+// =====================================================
+const ADMIN_SENHA = 'admin123';
+const VEL_CARREGADO = 60; // km/h
+const VEL_VAZIO     = 80; // km/h
+let adminLogado   = false;
+let viagemEditIdx = null;
+let viagensFiltro = 'TODOS';
+
+function loadViagens(){
+  try{ const s=localStorage.getItem('cerba_viagens'); return s?JSON.parse(s):[]; }catch{ return []; }
+}
+function saveViagens(arr){
+  try{ localStorage.setItem('cerba_viagens',JSON.stringify(arr)); }catch{}
+}
+
+// ── LOGIN ──────────────────────────────────────────
+function pedirAdmin(callback){
+  if(adminLogado){ callback(); return; }
+  document.getElementById('loginOverlay').classList.add('open');
+  document.getElementById('loginSenha').value='';
+  document.getElementById('loginError').style.display='none';
+  window._adminCallback = callback;
+  setTimeout(()=>document.getElementById('loginSenha').focus(),100);
+}
+
+function tentarLogin(){
+  const s = document.getElementById('loginSenha').value;
+  if(s === ADMIN_SENHA){
+    adminLogado = true;
+    document.getElementById('loginOverlay').classList.remove('open');
+    if(window._adminCallback){ window._adminCallback(); window._adminCallback=null; }
+  } else {
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginSenha').value='';
+    document.getElementById('loginSenha').focus();
+  }
+}
+
+function fecharLogin(){
+  document.getElementById('loginOverlay').classList.remove('open');
+  window._adminCallback=null;
+}
+
+// ── MODAL ──────────────────────────────────────────
+function abrirModalViagem(idx){
+  pedirAdmin(()=>{
+    viagemEditIdx = idx !== undefined ? idx : null;
+    const modal = document.getElementById('modalViagem');
+
+    // Popula o select de cidades
+    const sel = document.getElementById('mv-destino');
+    sel.innerHTML = '<option value="">Selecione a cidade...</option>' +
+      CIDADES.map((c,i)=>`<option value="${i}">${c.n} — ${c.s} (${c.d} km)</option>`).join('');
+
+    if(viagemEditIdx !== null){
+      const v = loadViagens()[viagemEditIdx];
+      document.getElementById('modalViagemTitle').textContent = '✏️ Editar Viagem';
+      document.getElementById('mv-motorista').value = v.motorista;
+      document.getElementById('mv-placa').value     = v.placa;
+      document.getElementById('mv-tipo').value      = v.tipo;
+      document.getElementById('mv-carga').value     = v.carga || 'carregado';
+      document.getElementById('mv-destino').value   = v.cidadeIdx;
+      document.getElementById('mv-status').value    = v.status;
+    } else {
+      document.getElementById('modalViagemTitle').textContent = '🚛 Nova Viagem';
+      document.getElementById('mv-motorista').value = '';
+      document.getElementById('mv-placa').value     = '';
+      document.getElementById('mv-tipo').value      = 'truck';
+      document.getElementById('mv-destino').value   = '';
+      document.getElementById('mv-status').value    = 'rota';
+    }
+
+    modal.classList.add('open');
+    setTimeout(()=>document.getElementById('mv-motorista').focus(),100);
+  });
+}
+
+function fecharModalViagem(){
+  document.getElementById('modalViagem').classList.remove('open');
+}
+
+function salvarViagem(){
+  const motorista = document.getElementById('mv-motorista').value.trim();
+  const placa     = document.getElementById('mv-placa').value.trim().toUpperCase();
+  const tipo      = document.getElementById('mv-tipo').value;
+  const carga     = document.getElementById('mv-carga').value;
+  const cidadeIdx = parseInt(document.getElementById('mv-destino').value);
+  const status    = document.getElementById('mv-status').value;
+
+  if(!motorista || !placa || isNaN(cidadeIdx)){
+    alert('Preencha todos os campos!'); return;
+  }
+
+  const cidade = CIDADES[cidadeIdx];
+  const distKm = cidade.d;
+  const velMedia = carga === 'carregado' ? VEL_CARREGADO : VEL_VAZIO;
+  const tempoH = distKm / velMedia;
+  const tempoStr = formatarTempo(tempoH);
+
+  const viagem = {
+    motorista, placa, tipo, carga, cidadeIdx,
+    cidade: cidade.n, estado: cidade.s,
+    distKm, tempoEstimado: tempoStr,
+    velMedia, status,
+    criadoEm: viagemEditIdx !== null
+      ? loadViagens()[viagemEditIdx].criadoEm
+      : new Date().toLocaleString('pt-BR')
+  };
+
+  const viagens = loadViagens();
+  if(viagemEditIdx !== null){
+    viagens[viagemEditIdx] = viagem;
+  } else {
+    viagens.unshift(viagem);
+  }
+  saveViagens(viagens);
+  fecharModalViagem();
+  renderViagens();
+
+  const t=document.getElementById('toast');
+  t.textContent = viagemEditIdx !== null ? '✓ Viagem atualizada!' : '✓ Viagem registrada!';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function excluirViagem(idx){
+  pedirAdmin(()=>{
+    if(!confirm('Excluir esta viagem?')) return;
+    const viagens = loadViagens();
+    viagens.splice(idx,1);
+    saveViagens(viagens);
+    renderViagens();
+  });
+}
+
+function atualizarStatus(idx, novoStatus){
+  pedirAdmin(()=>{
+    const viagens = loadViagens();
+    viagens[idx].status = novoStatus;
+    saveViagens(viagens);
+    renderViagens();
+  });
+}
+
+function filtrarViagens(f, btn){
+  viagensFiltro = f;
+  document.querySelectorAll('#tab-viagens .sf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderViagens();
+}
+
+function formatarTempo(horas){
+  const h = Math.floor(horas);
+  const m = Math.round((horas - h) * 60);
+  if(h === 0) return `${m}min`;
+  if(m === 0) return `${h}h`;
+  return `${h}h ${m}min`;
+}
+
+function statusLabel(s){
+  if(s==='rota')      return '<span class="status-badge status-rota">🟠 Em Rota</span>';
+  if(s==='entregue')  return '<span class="status-badge status-entregue">🟢 Entregue</span>';
+  return '<span class="status-badge status-aguardando">🔵 Aguardando</span>';
+}
+
+function tipoLabel(t){
+  return t==='truck' ? '🚛 Truck' : '🚚 Carreta';
+}
+
+function progressoPct(status){
+  if(status==='aguardando') return 10;
+  if(status==='rota')       return 60;
+  return 100;
+}
+
+function renderViagens(){
+  let viagens = loadViagens();
+  if(viagensFiltro !== 'TODOS') viagens = viagens.filter(v=>v.status===viagensFiltro);
+
+  // Contadores
+  const todos = loadViagens();
+  const cEl = document.getElementById('viagensContadores');
+  if(cEl){
+    const nRota = todos.filter(v=>v.status==='rota').length;
+    const nAg   = todos.filter(v=>v.status==='aguardando').length;
+    const nEnt  = todos.filter(v=>v.status==='entregue').length;
+    cEl.innerHTML = [
+      {label:'Total',val:todos.length,color:'var(--blue)',bg:'var(--blue-light)'},
+      {label:'Em Rota',val:nRota,color:'#e67e00',bg:'#fff3e0'},
+      {label:'Aguardando',val:nAg,color:'var(--blue)',bg:'var(--blue-light)'},
+      {label:'Entregues',val:nEnt,color:'#1a8a72',bg:'var(--teal-light)'},
+    ].map(c=>`
+      <div style="background:${c.bg};border-radius:12px;padding:16px 20px;text-align:center">
+        <div style="font-size:28px;font-weight:900;color:${c.color}">${c.val}</div>
+        <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px">${c.label}</div>
+      </div>`).join('');
+  }
+
+  const el = document.getElementById('viagensList');
+  if(!viagens.length){
+    el.innerHTML = `<div class="empty-state">
+      <div class="es-icon">🚛</div>
+      <div style="font-weight:700;color:var(--text2);margin-bottom:6px">Nenhuma viagem encontrada</div>
+      <div>Clique em "+ Nova Viagem" para registrar</div>
+    </div>`;
+    return;
+  }
+
+  const allViagens = loadViagens();
+
+  el.innerHTML = viagens.map(v => {
+    const realIdx = allViagens.findIndex(a=>
+      a.motorista===v.motorista && a.placa===v.placa && a.criadoEm===v.criadoEm
+    );
+    const pct = progressoPct(v.status);
+    return `
+    <div class="viagem-card status-${v.status}">
+      <div class="viagem-header">
+        <div>
+          <div class="viagem-rota">Piracicaba — SP<span>→ ${v.cidade} — ${v.estado}</span></div>
+          <div class="viagem-placa">${v.placa} · ${tipoLabel(v.tipo)}</div>
+        </div>
+        ${statusLabel(v.status)}
+      </div>
+
+      <div class="viagem-meta">
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">👤 Motorista</div>
+          <div class="viagem-meta-value">${v.motorista}</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">📍 Distância</div>
+          <div class="viagem-meta-value">${v.distKm} km</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">📦 Carga</div>
+          <div class="viagem-meta-value">${v.carga === 'vazio' ? '🔓 Vazio' : '📦 Carregado'}</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">⏱ Tempo Estimado</div>
+          <div class="viagem-meta-value" style="color:var(--blue)">${v.tempoEstimado}</div>
+        </div>
+      </div>
+
+      <div class="progress-bar" style="margin-bottom:4px">
+        <div class="progress-fill" style="width:${pct}%"></div>
+      </div>
+      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);margin-bottom:4px">Registrado: ${v.criadoEm}</div>
+
+      <div class="viagem-footer">
+        <div class="viagem-tempo">
+          Vel. média: <strong>${v.velMedia || (v.carga==='vazio' ? VEL_VAZIO : VEL_CARREGADO)} km/h</strong>
+        </div>
+        <div class="viagem-actions">
+          ${v.status === 'aguardando' ? `<button class="btn-status btn-entregar" onclick="atualizarStatus(${realIdx},'rota')" style="background:rgba(230,126,0,.1);color:#e67e00;border-color:#ffc96b">▶ Iniciar</button>` : ''}
+          ${v.status === 'rota' ? `<button class="btn-status btn-entregar" onclick="atualizarStatus(${realIdx},'entregue')">✓ Entregue</button>` : ''}
+          <button class="btn-status btn-editar" onclick="abrirModalViagem(${realIdx})">✏️ Editar</button>
+          <button class="btn-status btn-excluir" onclick="excluirViagem(${realIdx})">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Inicializa viagens quando abre a aba - patch direto no HTML
+// (renderViagens chamado via onclick nos botões da aba)
+
 </script>
 </body>
 </html>
