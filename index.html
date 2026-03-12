@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Frete — Cerba Destilaria</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --white: #ffffff;
+    --surface: #ffffff;
+    --surface2: #eef1f6;
+    --border: #d8dde8;
+    --border2: #c5ccd8;
+    --blue: #1a5fa8;
+    --blue-dark: #134c8a;
+    --blue-light: #e8f0fb;
+    --teal: #3ab5a0;
+    --teal-light: #e6f7f4;
+    --text: #1a2235;
+    --text2: #3d4f6e;
+    --muted: #8596b0;
+    --red: #d63f4a;
+    --shadow: 0 2px 12px rgba(26,95,168,0.08);
+    --shadow-md: 0 4px 24px rgba(26,95,168,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--blue);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .topbar-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-logo img {
+    height: 38px;
+    width: 38px;
+    border-radius: 6px;
+    object-fit: contain;
+    background: white;
+    padding: 3px;
+  }
+
+  .topbar-brand {
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .topbar-brand span {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    opacity: 0.65;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+
+  .topbar-origin {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    padding: 5px 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  .topbar-origin::before {
+    content: '📍';
+    font-size: 12px;
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 16px 80px;
+  }
+
+  /* PAGE TITLE */
+  .page-header {
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.5px;
+  }
+
+  .page-title span {
+    color: var(--teal);
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+
+  .tab-btn.active {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 2px 8px rgba(26,95,168,0.25);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* VEHICLE */
+  .veh-selector {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .veh-btn {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    box-shadow: var(--shadow);
+  }
+
+  .veh-btn:hover { border-color: var(--blue); }
+
+  .veh-btn.active-truck {
+    border-color: var(--blue);
+    background: var(--blue-light);
+    box-shadow: 0 4px 16px rgba(26,95,168,0.15);
+  }
+
+  .veh-btn.active-carreta {
+    border-color: var(--teal);
+    background: var(--teal-light);
+    box-shadow: 0 4px 16px rgba(58,181,160,0.15);
+  }
+
+  .veh-icon { font-size: 24px; margin-bottom: 6px; }
+  .veh-name { font-size: 16px; font-weight: 800; margin-bottom: 3px; color: var(--text); }
+  .veh-btn.active-truck .veh-name  { color: var(--blue); }
+  .veh-btn.active-carreta .veh-name{ color: var(--teal); }
+  .veh-spec { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); line-height: 1.7; }
+  .veh-btn.active-truck .veh-spec  { color: var(--blue); opacity: 0.7; }
+  .veh-btn.active-carreta .veh-spec{ color: var(--teal); opacity: 0.8; }
+
+  /* CARD */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--blue-light);
+  }
+
+  .card-title::before {
+    content: '';
+    display: block;
+    width: 4px; height: 14px;
+    background: linear-gradient(180deg, var(--blue), var(--teal));
+    border-radius: 2px;
+  }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    font-weight: 500;
+  }
+
+  #searchInput {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 16px;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  #searchInput:focus {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
+  }
+
+  #searchInput::placeholder { color: var(--muted); font-weight: 500; }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: white;
+    border: 1.5px solid var(--blue);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    z-index: 200;
+    max-height: 280px;
+    overflow-y: auto;
+    display: none;
+    box-shadow: var(--shadow-md);
+  }
+
+  .dropdown.open { display: block; }
+
+  .dd-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    transition: background 0.12s;
+  }
+
+  .dd-item:last-child { border-bottom: none; }
+  .dd-item:hover, .dd-item.hi { background: var(--blue-light); }
+
+  .dd-city { font-weight: 700; color: var(--text); }
+  .dd-state {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--blue);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+
+  .dd-dist { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); }
+  .dd-item:hover .dd-dist, .dd-item.hi .dd-dist { color: var(--blue); }
+
+  /* STATE FILTER */
+  .state-filter { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+
+  .sf-btn {
+    padding: 5px 14px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .sf-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+    box-shadow: 0 2px 6px rgba(26,95,168,0.2);
+  }
+
+  /* SELECTED CITY */
+  .selected-city {
+    background: linear-gradient(135deg, var(--blue-light), var(--teal-light));
+    border: 1.5px solid var(--blue);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .selected-city.visible { display: flex; }
+  .sc-name { font-size: 16px; font-weight: 800; color: var(--blue); }
+  .sc-dist { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--teal); margin-top: 2px; }
+
+  .btn-clear {
+    background: none; border: none;
+    color: var(--muted); cursor: pointer;
+    font-size: 16px; line-height: 1;
+    padding: 4px 6px; border-radius: 4px;
+    transition: all 0.15s;
+  }
+
+  .btn-clear:hover { background: rgba(214,63,74,0.1); color: var(--red); }
+
+  /* INPUTS */
+  .tanque-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 4px; }
+  .field { margin-bottom: 14px; }
+
+  input[type="number"] {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input[type="number"]:focus {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(26,95,168,0.1);
+  }
+
+  .input-prefix { position: relative; }
+  .input-prefix span {
+    position: absolute; left: 13px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px; pointer-events: none;
+  }
+
+  .input-prefix input { padding-left: 32px; }
+
+  /* FORMULA */
+  .formula {
+    background: #f8fafd;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 13px 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 2.1;
+    margin-bottom: 16px;
+  }
+
+  .fy { color: var(--blue); font-weight: 500; }
+  .fb { color: var(--teal); font-weight: 500; }
+  .fg { color: #2a7a5e; font-weight: 500; }
+
+  /* BUTTON */
+  .btn-calc {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,95,168,0.3);
+  }
+
+  .btn-calc:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(26,95,168,0.35);
+  }
+
+  .btn-calc:active { transform: translateY(0); }
+
+  /* RESULT */
+  .result-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: none;
+    animation: slideUp 0.4s cubic-bezier(0.16,1,0.3,1);
+    box-shadow: var(--shadow-md);
+  }
+
+  .result-box.visible { display: block; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-header {
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    padding: 28px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+
+  .result-header::before {
+    content: '';
+    position: absolute;
+    top: -20px; left: -20px;
+    width: 80px; height: 80px;
+    background: rgba(58,181,160,0.15);
+    border-radius: 50%;
+  }
+
+  .result-label {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .result-value {
+    font-size: clamp(2.8rem, 9vw, 4.2rem);
+    font-weight: 800;
+    color: white;
+    letter-spacing: -2px;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  .result-unit {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* TEAL accent bar */
+  .result-accent {
+    height: 4px;
+    background: linear-gradient(90deg, var(--teal), #5dd3c0);
+  }
+
+  .breakdown { padding: 20px 22px; }
+
+  .bd-title {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .bd-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--surface2);
+    font-size: 13px;
+  }
+
+  .bd-item:last-child { border-bottom: none; }
+  .bd-l { color: var(--muted); font-size: 12px; font-weight: 500; }
+  .bd-v { font-family: 'IBM Plex Mono', monospace; font-weight: 500; color: var(--text2); }
+  .bd-v.total { color: var(--blue); font-size: 16px; font-weight: 700; }
+  .bd-v.green { color: var(--teal); }
+
+  /* TABLE TAB */
+  .search-bar {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 11px 14px;
+    color: var(--text);
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    margin-bottom: 14px;
+    transition: all 0.2s;
+  }
+
+  .search-bar:focus { border-color: var(--blue); background: white; }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    background: var(--blue);
+    color: white;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--surface2); transition: background 0.1s; cursor: pointer; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--blue-light); }
+
+  tbody td { padding: 10px 14px; font-size: 13px; }
+  td.city-name { font-weight: 700; color: var(--text); }
+  td.dist-val { font-family: 'IBM Plex Mono', monospace; color: var(--blue); font-size: 12px; }
+
+  .state-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+  }
+
+  /* CONFIG */
+  .config-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--surface2);
+  }
+
+  .config-row:last-child { border-bottom: none; }
+  .config-label { font-size: 14px; color: var(--text); font-weight: 600; }
+  .config-sub { font-size: 11px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 2px; }
+
+  .config-input {
+    width: 120px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    outline: none;
+    text-align: right;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .config-input:focus { border-color: var(--blue); background: white; }
+
+  .btn-save {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,95,168,0.25);
+  }
+
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(26,95,168,0.3); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--blue);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    z-index: 999;
+    white-space: nowrap;
+    box-shadow: var(--shadow-md);
+    border-left: 4px solid var(--teal);
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+
+  .sc-hint { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--teal); margin-top: 3px; }
+  .hist-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 13px 16px; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .hist-item:last-child { margin-bottom: 0; }
+  .hist-left { flex: 1; }
+  .hist-city { font-weight: 700; font-size: 14px; color: var(--text); }
+  .hist-meta { font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 3px; }
+  .hist-val { font-size: 18px; font-weight: 800; color: var(--blue); font-family: 'IBM Plex Mono', monospace; white-space:nowrap; }
+  .hist-reuse { background: var(--blue-light); border: 1px solid var(--blue); color: var(--blue); border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 700; cursor: pointer; white-space:nowrap; font-family:'Raleway',sans-serif; transition: all .15s; }
+  .hist-reuse:hover { background: var(--blue); color: white; }
+
+
+  /* ── VIAGENS ── */
+  .status-badge { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:100px; font-size:11px; font-weight:700; font-family:'IBM Plex Mono',monospace; }
+  .status-rota    { background:#fff3e0; color:#e67e00; border:1px solid #ffc96b; }
+  .status-entregue{ background:#e6f7f4; color:#1a8a72; border:1px solid #3ab5a0; }
+  .status-aguardando{ background:#f0f4ff; color:#1a5fa8; border:1px solid #90b3e8; }
+  .viagens-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:20px; }
+  .viagem-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px 28px; box-shadow:var(--shadow); transition:all .25s; border-left:5px solid var(--border); }
+  .viagem-card:hover { box-shadow:var(--shadow-md); transform:translateY(-2px); }
+  .viagem-card.status-rota     { border-left-color:#e67e00; }
+  .viagem-card.status-entregue { border-left-color:var(--teal); }
+  .viagem-card.status-aguardando{ border-left-color:var(--blue); }
+  .viagem-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:18px; gap:12px; }
+  .viagem-rota { font-size:17px; font-weight:800; color:var(--blue); line-height:1.3; }
+  .viagem-rota span { color:var(--teal); display:block; }
+  .viagem-placa { font-size:12px; font-family:'IBM Plex Mono',monospace; color:var(--muted); margin-top:5px; background:var(--surface2); display:inline-block; padding:3px 10px; border-radius:6px; letter-spacing:1px; }
+  .viagem-meta { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+  .viagem-meta-item { background:var(--surface2); border-radius:10px; padding:12px 16px; }
+  .viagem-meta-label { font-size:10px; font-family:'IBM Plex Mono',monospace; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:5px; }
+  .viagem-meta-value { font-size:14px; font-weight:700; color:var(--text); }
+  .viagem-footer { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-top:14px; border-top:1px solid var(--border); }
+  .viagem-tempo { font-size:12px; font-family:'IBM Plex Mono',monospace; color:var(--muted); }
+  .viagem-tempo strong { color:var(--blue); font-size:13px; }
+  .viagem-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .btn-status { padding:8px 16px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:'Raleway',sans-serif; border:none; transition:all .15s; }
+  .btn-editar { background:var(--blue-light); color:var(--blue); border:1px solid var(--blue); }
+  .btn-editar:hover { background:var(--blue); color:white; }
+  .btn-excluir { background:rgba(214,63,74,.08); color:var(--red); border:1px solid rgba(214,63,74,.3); }
+  .btn-excluir:hover { background:var(--red); color:white; }
+  .btn-entregar { background:var(--teal-light); color:#1a8a72; border:1px solid var(--teal); }
+  .btn-entregar:hover { background:var(--teal); color:white; }
+  @media(max-width:900px){ .viagens-grid{ grid-template-columns:1fr; } }
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:500; display:none; align-items:center; justify-content:center; padding:16px; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:white; border-radius:16px; padding:28px; width:100%; max-width:520px; box-shadow:0 20px 60px rgba(0,0,0,0.2); animation:slideUp .3s cubic-bezier(.16,1,.3,1); max-height:90vh; overflow-y:auto; }
+  .modal-title { font-size:18px; font-weight:800; color:var(--blue); margin-bottom:20px; padding-bottom:14px; border-bottom:2px solid var(--blue-light); }
+  .modal-field { margin-bottom:14px; }
+  .modal-field label { display:block; font-size:11px; font-family:'IBM Plex Mono',monospace; letter-spacing:1px; color:var(--muted); text-transform:uppercase; margin-bottom:6px; }
+  .modal-field input, .modal-field select { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:11px 14px; color:var(--text); font-family:'Raleway',sans-serif; font-size:14px; font-weight:600; outline:none; transition:all .2s; -webkit-appearance:none; }
+  .modal-field input:focus, .modal-field select:focus { border-color:var(--blue); background:white; box-shadow:0 0 0 3px rgba(26,95,168,.1); }
+  .modal-footer { display:flex; gap:10px; margin-top:20px; }
+  .btn-modal-save { flex:1; padding:13px; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); color:white; border:none; border-radius:10px; font-family:'Raleway',sans-serif; font-size:15px; font-weight:800; cursor:pointer; }
+  .btn-modal-cancel { padding:13px 20px; background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:10px; font-family:'Raleway',sans-serif; font-size:14px; font-weight:700; cursor:pointer; }
+  .login-overlay { position:fixed; inset:0; background:linear-gradient(135deg,var(--blue),var(--blue-dark)); z-index:600; display:none; align-items:center; justify-content:center; }
+  .login-overlay.open { display:flex; }
+  .login-box { background:white; border-radius:16px; padding:36px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+  .login-logo { font-size:32px; margin-bottom:8px; }
+  .login-title { font-size:20px; font-weight:800; color:var(--blue); margin-bottom:4px; }
+  .login-sub { font-size:13px; color:var(--muted); margin-bottom:24px; }
+  .login-error { background:rgba(214,63,74,.08); border:1px solid rgba(214,63,74,.3); color:var(--red); border-radius:8px; padding:10px; font-size:13px; margin-bottom:14px; display:none; }
+  .empty-state { text-align:center; padding:40px 20px; color:var(--muted); font-size:14px; }
+  .empty-state .es-icon { font-size:48px; margin-bottom:12px; }
+  .progress-bar { height:4px; background:var(--surface2); border-radius:2px; overflow:hidden; margin-top:10px; }
+  .progress-fill { height:100%; background:linear-gradient(90deg,var(--blue),var(--teal)); border-radius:2px; transition:width .3s; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--surface2); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media(max-width:480px){ .tanque-row{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCADIAMgDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAcIBQYBAgQD/8QAQhAAAQQCAQMCBAMFAwgLAAAAAQACAwQFEQYHEiExQQgTFFEiYYEVIzJxkVJyoRYkN0KCkrGzJzM4U3R1g5WywdP/xAAaAQEAAgMBAAAAAAAAAAAAAAAAAgUBAwQG/8QALxEAAgICAgECBQIFBQAAAAAAAAECAwQREiExBVETIkFhcYHRFBUjQuEGMrHB8P/aAAwDAQACEQMRAD8AuWiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIB6oixGX5BjMYeyecOm1sRM8v8A6e36oQlOMFuTMuEXlxtn6ulFZMZj+a0PDT6gH0/wX0ZYhfKYmPDnAbIHnSi5Ja2ST2to+yIikZCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIfA8oDr+i+Nq1XqQPnszRwxMG3Pe4AAfmSoz571hw+Fmlx2EDMrfYe1zmu/cRH83D+Ij7Dx9yCoukzvIeX5eGO9bksyyyBsULfwxtJ8DTR4Hr6+v3KucP0S6+PxLPlj9zy3qv8AqjHw5fCq+efjS8E7c25RHT4ecljZe42niGvJr3JO3D9Gkhajw3i+Uys7bl+OWCs53c98uw+T3OgfJ39z4/mt8nZhePcepvyboBBQY1sckjQSHAa2337j59PPkrWanPrGcz9XG4at8mGWUNdLINvLAdkgeg8A+u/0XNGLdUlXHrfk33ut5EJZM/m0tRXuzZeRzWhJBi8fE/8AEzb+wfwt9AN+w9f6LIYSi+nATK5pkcPOvQD7LI/zT3VS6k582egjHXZyiItxIIiIAiIgCIiAIiIAiIgCIiAIiIAiIgOPZVw+IPqpYnvWOIccsuhrQkx37MZ06R3vE0+zR6EjyTsegO5o6qZyTjfT/M5mE9s0NciF32keQxh/3nBVS6ScXqcnz89vOWTBhMbGbeSnc4jbd+Gb9du0fz0DrzpX/ouNVqWTatqPhfc8169l27ji0vTl5f2Pb054TyDlUndjanbVadSWpttib9xvXk/kAT99KY+HQcM4bmK1Ktbdnc9NI2D5kQ/BCXHR15IH5+SfX0BIUd8y6l2s0z9icdi/ZHHoR8uKCEBjpWDwC7Xo0/2R48+drdeg/DrpyEfI8jXfDWibuq2QaMjiNd+j7AE6Pvsa9Fb50rZUSsyJcY66ivL9t/sjyeFCuObCrEhznvub8L30v+2ZjqljuQco5XFicZVlkq04x3Pd+GJsjhsku9DoFvgbPr48raeAcJh42z6mxK2zfe3ReBpsY9w338+5P+Hne4+AuV5azPslTGiPUV7fU91T6PTDKllTfKb9/C/ByiIuItwiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiICOfiNry2Oj2aEQJMfyZCB7gSsJ/oNn9FWl95+O6XVMXXPa/MX5LFkt8F0UXayNh+47+86+4CubncdWy+GuYu23ur24HwSD37XAg/8VWDg/FZouqvHOL5mPb8VesskaR+FzWN+fG/X2eTsb9QD+a9L6NkwjROMv7Xy176X7nlPXcWc8iMo/wBy479uyR+ivSitiaNfOckrCfJSASRVpBttcEbGwfV/8/T+Y2plGtaA0gHj09EVFlZduVY52PZfYWDThVKupa939WdkRFznaEREAREQBERAEREAREQBERAERdXOa0EkgADySdaQHKKPc/1m6a4ay6ra5PXlmadFtWN84B+xcwFv6bXfj/WTpvm7Da1PlFaOZx01lpj4Nk+gBeACfyBW7+Gu1y4vX4Of+Lo3x5rf5JARcNIcNtIIP2XWR7Y2Oe9wa1oJJcdAAevlaTo2dkCjvOdaummJtOqz8mhnladEVYXzt3/eY0t/xWT4j1N4LyuwKuE5FWmsu/hglDoZHH8mvALv02trx7VHk4vX4OdZVLlxU1v8m4e+lq3IeKQ3eV4jlFPtiyNCUCQn0mhIcxwP5gPcQfzI9wRtS1XlHPeJ8azNLDZjMRw5G69jIKzGOke4ud2tJDQe0E+50PBWKnYpfJ5/9szcq3H+p4RtW1ytR5n1H4XxCQQZ/PV61kgEV2NdLKAfQljASAfYkALvwXqBxPmrZhxzLMtywaMsTo3RyMBPg9rgCR+Y2PbafBsUefF69zPx6nLhyWyvXxJc/wCV1+qkvHcdmruOx9IQAR1ZnRGVz2teS4tIJ/iA0ToAemyVa5u+0fdUo+JYa695X+9V/wCTGrV8v6icL4i/5Ofz9WtPrfyG7llAPoSxgLgPzIAVjmU7qpUI9tfT9Cqwb9XXOyXSf1/U230RR1hutvTPKWm1oeTRQSuOh9VDJC0/7b2ho/UqQYZI5o2yRPa9jgC1zTsEfkfsq2dU63qaaLau6u1fJJP8H0QoSANkgLQ+R9XunWAsOrX+T1XTtOnR1mvnIP2JYCAfyJCQrnY9QW2LLYVrc2kb4ijrDdbOmeVstrQcnhgld4H1UMkLf997Q0f1UgwyRzRtlie17HAOa5p2CD7j8ksqnW9TTQrurs/2STPqiIoG0IiIAiIgOPdVl+Lvn2QhyEXB8XYfXr/IE+QcxxBlLt9sZI/1QBsj32Pt5s0fHlUp+J0b675Meo1V8f8AosVl6TXGd/zLelsqPWbJQx9RettI37pv8N1K5g6+S5jkrsVqxGJBTqFrPlAjYD3OBJOj5AA0fGyvL1X+Havh+O2c1xHI3LBqRmWalb7XOewDbixzQPIAJ0Qd+dHegbQt/hH8l0miZLE+KQBzHtLXNPoQRohRXqeQrOXLr2+hP+U4zr4qPfuQB8G/Kcpk8PluPZCaWxXxnyn1Hv2TG1/cDHs+wLdge2z7ALWvij55l8zzAdO8FLK2rE+OOzHEdG1O/RDCfdo20a9CSd70NWN4pxfj/FqDqPHsVXx8D3d72xA7eda24nyTr7kqmvUPLHA/EJk826uLX0GbFn5Rf29/Y8OA3o63rW9HX2XXhuGRlTsjHwtpfc4c1WY2JCqUvL039iaeGfDVxqti4n8ou3L2Qe3crK8vy4YyR5DdDZ16bJG/sFqfWjoPW4xgJ+UcQu3HR0gJbFWd4c9jAfL43gA/h9SDs6BIPjRyA+KiQDX+Q7f/AHM//ksdyf4k3ZvjeTw54a2EXqktYyftLu7A9hbvXyxvW962N6WyuPqKs5S7W+1taNdkvTXVxj09edPeySPhe5/d5lxOzjsxM6fJ4lzGPncfxTROB7HOPu4FrgT76BPklQH8RdyzV6+Zq5XlLZ601Z8LtA9hbDERoHx4I3pb38EsMxzPJJxG/wCSK8DC/R7e7ucQN+m9bOlpnW9jXfEneY8BzXX6YIPuDFFsLbj1wqzbFFda/Y1ZNk7cCtyfe9f8kg8D+Hg5qi3O8/zGR/aF79++vC8B7S7z+8e8El3nyABo+NlSN046Nce4Hyx2fw2Ryby+q+u6Cw9jm/ic07BDQfHb6Hfrv2Umt9AuVTW519m05dP6fQvKfT6KtNR79ykfxQkt645tzCQ4NrFpHqD8iNSTwP4cmZKgzLc7zGQ/aFofOfWrvHcwu8/vHvDi53nzoDR9z6qPPiS/0/5P+/U/5Mauq30H8lZ5eVZTj1Kt62v2KrCxK78m52Len4K09SPhupUsFZyXEMneksVo3SmpbLXiUAbIa5oBB0PAIOz42PVfH4PObX35O1wm/O+ap9ObNHvdsxFpAcwfkQd69AQfuVZuX/qn/wB0/wDBUw+Ez/TJT/8ACT//ABUKLZZOLare+PaZsvohiZdTqWuXTJs+Kk8xn4ti8VxavakgyNv6e6awPed6EbCR6McSQSdDwATo6OC4T8NOCgx8U3LMjcuXntBfDVeI4YyfYHXc4j77H8lv3Wvqdj+nWGicYRcytsOFSr3aB16vefUNGx+ZPge5EFYvl/X/AKgF97j/ANY2n3EN+lhiggBB8hr5NF2vzcSFDFWQ6EoNQj7+NksuWMshuac5ey70bj1E+G/CfsOxc4fZuw5CGMyMqzyCSObQ32A6BBPsSSN6BA3sYX4Pub5AZqfhF6w+alJA6ekHuJML2kFzB9mkEnXoC069SvlH1A64dO5Y7PNcTPkcV3BshnjjIaCfQTRbAJ9u7Y/Jah8Ljw/rhjHgaDo7J1/OJ5XX8OyWNYrZKSS2nvZx/Fqjl1umLi29NMuuiIvOHqgiIgCIiA6+ypb8UrJK3W+/PKwtZJFWlZ4/iaI2gkfq0j9FdM+iivr50pj6hY+C5j5oqucpsLIZJNhkzCd/LeQCRo7IOjok+POx3em5EaLty8NaK31THnfRqHlPZJWKvVclja+QozsnrWI2yxSNOw5rhsEfoV8ORZWnhMJcy96VsVapC6WRzjrQA3/X2A9yqhYh3XPpoH4yhQzcNRrj+6bUFuuCTs9pAcB9/BG/ddcxH1x6mujoZHHZuet3AtikqCpX2PQkkNaSPzJI9l0L0xct/EXH32cv82lw4quXP8E8dBurUnUY5CnexbKF6kxkhMTy6ORjiRsA+RogeNn1UA82fFhvidms5YNjrR5+GeYyDbflOcx/cQfUdp2rEdAumA6d4Kw67PHZzF8tNp8eyyNrd9rG7AJA2STobJ9PAWJ+ILo//l2I85hJYa+cgj+W5snhlpg2Q0n2cNnR996PjRGaL8erJko9Ra1sxfj5N2LBy7nF70So3D4ZzQ5uMokEf9w0/wD0sNzabAcW4pk+QWcTQfHRrvlEZia35jgPwsB0dFztAeD5KrTieSde+BVm4U4rKy1oB2RNnx5ssYB4AZI0HYHoB3EAegC+eSxvXLqvLFSytG/DQDw7tswfR12n+0QQC/Xn2cR50sL09qW5WLj77My9RUocYVvl+PqWE6K8+w3PcBYtYvFuxclWYMs1SAQ0kbBBGgQfvoHYPj0JrX1s/wC0te/8xpf8uFWb6N9PqnTziv7Min+quWJPnXLBboPfoDTR7NAGh+p99KB+ovCOUci+JW5LjsNdfS+uqSPuOhc2BrGxRFxLyNHWj4B2SNAbWzBnVHIscXqOnrZDPrunjVqS+ba3otg3+EfyXKD0CKlL5eCk3xLvbF15y8jv4WGq469dCGMq5+OuVr9CC7TmZPWsRiSKRh217SAQQfsQqq9ZeBcl5h8Ql6DH4e++lYfVZJdEJEMbPkxh7i8jt8AHxvZI0AT4XNvB9cOk75KPHLF/J4TuJhdWrizGATvzGQ50R9zoAbJ8n1V7fVDIpqippSS8P9DzmPdPFvtm4Nxb8otNmLtbG4q3fuStirV4XSyvcdBrWgkn+gVPvhHgkl6wQyRtJbDRnfIfsPDdn9XAfqumXs9c+o4GJvUM5PVe4bi+jFSuSDsdzu1oOj5/ET6KfegHSxnT3ET2shLHYzd4ATvj32QsHkRsJ8nz5J8bOvHgbhxjhY84yknKXWkbOc8/JhKMWox72yCPi7ksP6vvZYLvlR0IWw79Aw9xOv8AaLlbjjVbHU8BQrYhsbcfHWjbW+Xrt+X2jtI1+Sjb4helJ6gUYMliZIoc7RYWRiTw2xGTvsJ9iCSQfTZIPrsQ3x/kvXTp3Wbg24HI2KcB7YorOPfYjZ+TJGeo+wDiB7ALDiszHhCEknHrTZlSeFlTnOLcZeGi2OarULeIt1cpHFJRlhe2w2X+AsIPdvftrapx8LwiHXHGthcXRBlnsJ9SPlP0T+i3H/p46qs/ZORgfx/DTeLL31TVY5nuCHfvHgjfgHR99DyvH8MvA+TUeqgzF3EXKePx8czTPZhMYlcWlgDdgb3snY2AB6+RudFccfHtjKSba8JmvItllZNUowaSflotiiIqM9GEREAREQHG9LBch5HHiMjUxzcXkcjatwzTtjqMYS1kZYHE97mj1kYABsnfos7pa1yTCZe5yDHZrDZGjUnqVbFZzbVR8zXtlfC7Y7ZGEEGEe53tSglvs1WOSj8vk4scyx7cfiblKnfyP7Vc5taKvG0Sba0ud3B7m9pAaQQTsEa0vrlOTxY+PHMficlJeyHeYaMbY/nAMG3kkvDBoEeO7Z34B86wWW6ffU4PA42Ozj7Rxcsksn7RomaKw57XhxLA9uvxPJA2denn1Xv5JxjJZvGY6CebCSurBwngs40yVpCQA1zGl4dG5uvBDj4JHuCNuq+uzTu7T67PRmOY18dhqOW/Y+Xs1bvyg0xQta6N0jmMY17XuaQS54GtHR3vQWRGbhbcxlKxWs1rORjkfHFIG7Z2AFwdokA6I9CVjDxWZ/DMfx+XKSTyVJ6kzrMjS4v+TYjmI0SSAQztGySARsnXnJZHEfWcixWW+o7Bj2Tt+X277zIGj13412/ntR+Tx+f8E/6vn8f5PvgcpVzGPF+mH/JMs0X4xo90cjo3fptp1+WvRebCcjxeXy+VxlKR7rGLlbHYBboEuB8tPuNhzSf7TXD2WP4jg87gmSUJMpj7GO+bYlha2m9szTLK6T8TjIQQO8jw0b17Lw8R4FHxzJ0slXy1yayKssN8zPc5tp0jhIXhpOoz8wvdof23D32nGHff4McrPl6/J7cDzbH5e5Urtx+SqsvfM+jnnjYI7BZsuDS1xIOgT+IDYB/kvceS40cdvZ9xlbTovssl2z8ZMEj43hoHqS5hAHqdj3OlguMdPaWBvYe/WmZ9VSbO2zIGHdgS+daJIbo6Ox669tlei1wr6rjkeCmyUrarsvNkLJhBY+Rr7Es7Iw4HbdPfGSR69h8DfjMlVy6fRiLv49pbNkwmSrZjE1MpScXVrULZYy4aOiN6I9j9x7FYLJ82oUMpfqT0Mka+PljiuXWRNMEBexjwXfi7tAPbshpA878Ale3huBHG8dNjYrk1mp9TJNWEpLnxMee4sLiSXfjLyCfYge2zhM1wzK37+djbmakOJzk0b7cX0bnThrYo43NZJ8wNGxH6lh1s+DoLEFXye319CUnbwWl39TL3uTMr8ikwdbDZO/YhiilmfXbH2RNkc8N2Xvaf9Rx8A6AWwn0Wl5fiFybnT+U0psKZTXgiYL2PdNJCYzIdxvEje3Yk8+PYLZ81XtXMPcqUrf0dmaB8cNjt7vlPLSA/WxvRIOtj0UZqPXElBz75IwfFeV1sxj83kfnRPrY67NEBFG4OEcbQQSSfxFw/GCAAQ5oG9bORs8hoVeLN5HMZW0nV2TtHyyZCH67Who3txLgND3KwWD4BVwTL1bFX7TKd3GtpPhsPdMWuYC1jwXHwA1xBaPB0PTS7QcWzNjhsnG8pmKL2RwQx1J6tJ8bo3REFrnh0jg8ba06Gvcb8+NjVbl0+jXF2qOmuz3V+X481MpYyNS/in4qFs9qG1EO8RODi17ewuDgexwABJ2CCAUq8vxz4si7JVbuIfjq31liO7GA4QacfmDsLgR+F2wDsEeQNjfnn43msriMxR5BnIpjka7YIm06pijra7vxgOc4ucS4E7IGmgAepPyfxC7lGZl3IspBPLk8acZ/mVYwtiiPft2nPeS8l5PqAAANHyS1WN29dHuxvLKdqSxDZx+Rxs8NU3BFbia10kI9Xt7XEeDoEEgjY2BtZnF3IsjjK2Qrhwiswsmj7ho9rgCNj76K1ypxnKzXbV7OZerYsvx78fD9LUMTGtcQXPcC9xLiQ3wCAAD678e/h2NzeJxkOPymQoXIq8EcMDq1R8LtMGvxd0jgSQB6a91CSjronW57XJGwIiLWbwiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgP/9k=" alt="Cerba">
+    <div class="topbar-brand">
+      Cerba Destilaria
+      <span>Sistema de Fretes</span>
+    </div>
+  </div>
+  <div class="topbar-origin">Origem: Piracicaba — SP</div>
+</div>
+
+<div class="container">
+
+<div class="page-header">
+  <div>
+    <div class="page-title">Calculadora de <span>Frete</span></div>
+    <div class="page-subtitle">Selecione o destino e o veículo — o valor é calculado automaticamente</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('calc',this)">🧮 Calcular</button>
+  <button class="tab-btn" onclick="showTab('cities',this)">🗺️ Cidades</button>
+  <button class="tab-btn" onclick="showTab('viagens',this);renderViagens()">🚛 Viagens</button>
+  <button class="tab-btn" onclick="showTab('historico',this)">🕓 Histórico</button>
+  <button class="tab-btn" onclick="showTab('config',this)">⚙️ Config</button>
+</div>
+
+<!-- ===== ABA CALCULAR ===== -->
+<div id="tab-calc" class="tab-panel active">
+
+  <div class="veh-selector">
+    <button class="veh-btn active-truck" id="btn-truck" onclick="selectVeh('truck')">
+      <div class="veh-icon">🚛</div>
+      <div class="veh-name">Truck</div>
+      <div class="veh-spec" id="spec-truck">1,5 km/L · 6 eixos</div>
+    </button>
+    <button class="veh-btn" id="btn-carreta" onclick="selectVeh('carreta')">
+      <div class="veh-icon">🚚</div>
+      <div class="veh-name">Carreta</div>
+      <div class="veh-spec" id="spec-carreta">1,2 km/L · 8 eixos</div>
+    </button>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Cidade de Destino</div>
+
+    <div class="state-filter" id="stateFilter">
+      <button class="sf-btn active" onclick="filterState('TODOS',this)">Todos</button>
+      <button class="sf-btn" onclick="filterState('SP',this)">SP</button>
+      <button class="sf-btn" onclick="filterState('MG',this)">MG</button>
+      <button class="sf-btn" onclick="filterState('PR',this)">PR</button>
+      <button class="sf-btn" onclick="filterState('GO',this)">GO</button>
+      <button class="sf-btn" onclick="filterState('SC',this)">SC</button>
+    </div>
+
+    <div class="search-wrap">
+      <label>Buscar cidade</label>
+      <input type="text" id="searchInput" placeholder="Digite o nome da cidade..." autocomplete="off"
+             oninput="onSearch()" onkeydown="onKey(event)">
+      <div class="dropdown" id="dropdown"></div>
+    </div>
+
+    <div class="selected-city" id="selectedCity">
+      <div>
+        <div class="sc-name" id="scName">—</div>
+        <div class="sc-dist" id="scDist">—</div>
+        <div class="sc-hint" id="scHint"></div>
+      </div>
+      <button class="btn-clear" onclick="clearCity()" title="Limpar">✕</button>
+    </div>
+
+    <div class="tanque-row">
+      <div class="field">
+        <label>Valor do Pedágio (ida)</label>
+        <div class="input-prefix">
+          <span>R$</span>
+          <input type="number" id="inputPedagio" placeholder="0,00" min="0" step="0.01" value="0" oninput="recalc()">
+        </div>
+      </div>
+      <div class="field">
+        <label>Quantidade de Tanques</label>
+        <input type="number" id="inputTanques" placeholder="1" min="1" step="1" value="1" oninput="recalc()">
+      </div>
+    </div>
+
+    <div class="formula" id="formulaBox">Selecione uma cidade para ver o cálculo</div>
+  </div>
+
+  <div class="result-box" id="resultBox">
+    <div class="result-header">
+      <div class="result-label">Valor do Frete</div>
+      <div class="result-value" id="rValor">—</div>
+      <div class="result-unit" id="rInfo">—</div>
+    </div>
+    <div class="result-accent"></div>
+    <div class="breakdown">
+      <div class="bd-title">Detalhamento do Cálculo</div>
+      <div class="bd-item"><span class="bd-l">Distância ida</span><span class="bd-v" id="b0">—</span></div>
+      <div class="bd-item"><span class="bd-l">Distância ida e volta</span><span class="bd-v" id="b1">—</span></div>
+      <div class="bd-item"><span class="bd-l">Litros consumidos</span><span class="bd-v" id="b2">—</span></div>
+      <div class="bd-item"><span class="bd-l">Custo diesel</span><span class="bd-v" id="b3">—</span></div>
+      <div class="bd-item"><span class="bd-l">Custo pedágio (valor × eixos)</span><span class="bd-v" id="b4">—</span></div>
+      <div class="bd-item"><span class="bd-l">Total bruto</span><span class="bd-v" id="b5">—</span></div>
+      <div class="bd-item"><span class="bd-l">Por tanque</span><span class="bd-v" id="b6">—</span></div>
+      <div class="bd-item"><span class="bd-l">+ Margem (R$ 0,04)</span><span class="bd-v green" id="b7">—</span></div>
+      <div class="bd-item"><span class="bd-l" style="font-weight:800;color:var(--blue)">Frete Final</span><span class="bd-v total" id="b8">—</span></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== ABA CIDADES ===== -->
+<div id="tab-cities" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Tabela de Distâncias — Origem: Piracicaba SP</div>
+    <input type="text" class="search-bar" placeholder="Filtrar cidade ou estado..." oninput="filterTable(this.value)">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Cidade</th>
+            <th>UF</th>
+            <th>Dist. Ida</th>
+            <th>Ida + Volta</th>
+          </tr>
+        </thead>
+        <tbody id="citiesTable"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ABA CONFIG ===== -->
+<div id="tab-config" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Truck 🚛</div>
+    <div class="config-row">
+      <div><div class="config-label">Consumo (km/L)</div></div>
+      <input type="number" class="config-input" id="cfg-tkml" value="1.5" step="0.1" min="0.1">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Eixos por pedágio</div></div>
+      <input type="number" class="config-input" id="cfg-teixos" value="6" step="1" min="1">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Carreta 🚚</div>
+    <div class="config-row">
+      <div><div class="config-label">Consumo (km/L)</div></div>
+      <input type="number" class="config-input" id="cfg-ckml" value="1.2" step="0.1" min="0.1">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Eixos por pedágio</div></div>
+      <input type="number" class="config-input" id="cfg-ceixos" value="8" step="1" min="1">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Parâmetros Gerais</div>
+    <div class="config-row">
+      <div><div class="config-label">Preço do diesel (R$/L)</div></div>
+      <input type="number" class="config-input" id="cfg-diesel" value="5.60" step="0.01" min="0.01">
+    </div>
+    <div class="config-row">
+      <div><div class="config-label">Margem adicional (R$)</div></div>
+      <input type="number" class="config-input" id="cfg-margem" value="0.04" step="0.01" min="0">
+    </div>
+  </div>
+  <button class="btn-save" onclick="saveConfig()">💾 Salvar Configurações</button>
+</div>
+
+
+<!-- ===== ABA HISTÓRICO ===== -->
+<div id="tab-historico" class="tab-panel">
+  <div class="card">
+    <div class="card-title">Últimos Fretes Calculados</div>
+    <div id="historicoList"><p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p></div>
+    <button class="btn-save" style="margin-top:16px;background:var(--red);box-shadow:none" onclick="limparHistorico()">🗑️ Limpar Histórico</button>
+  </div>
+</div>
+
+
+<!-- ===== ABA VIAGENS ===== -->
+<div id="tab-viagens" class="tab-panel">
+  <!-- HEADER PAINEL -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px">
+    <div>
+      <div style="font-size:22px;font-weight:800;color:var(--blue);letter-spacing:-0.5px">🚛 Painel de Viagens</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px">Monitoramento em tempo real · Piracicaba — SP</div>
+    </div>
+    <button class="btn-calc" style="width:auto;padding:13px 24px;font-size:15px;border-radius:12px" onclick="abrirModalViagem()">+ Nova Viagem</button>
+  </div>
+
+  <!-- CONTADORES -->
+  <div id="viagensContadores" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:24px"></div>
+
+  <!-- FILTROS STATUS -->
+  <div class="state-filter" style="margin-bottom:20px">
+    <button class="sf-btn active" onclick="filtrarViagens('TODOS',this)">Todas</button>
+    <button class="sf-btn" onclick="filtrarViagens('rota',this)">🟠 Em Rota</button>
+    <button class="sf-btn" onclick="filtrarViagens('aguardando',this)">🔵 Aguardando</button>
+    <button class="sf-btn" onclick="filtrarViagens('entregue',this)">🟢 Entregues</button>
+  </div>
+
+  <div class="viagens-grid" id="viagensList"></div>
+</div>
+
+<!-- MODAL NOVA/EDITAR VIAGEM -->
+<div class="modal-overlay" id="modalViagem">
+  <div class="modal">
+    <div class="modal-title" id="modalViagemTitle">🚛 Nova Viagem</div>
+    <div class="modal-field">
+      <label>Nome do Motorista</label>
+      <input type="text" id="mv-motorista" placeholder="Ex: João Silva">
+    </div>
+    <div class="modal-field">
+      <label>Placa do Caminhão</label>
+      <input type="text" id="mv-placa" placeholder="Ex: ABC-1234" style="text-transform:uppercase">
+    </div>
+    <div class="modal-field">
+      <label>Tipo de Veículo</label>
+      <select id="mv-tipo">
+        <option value="truck">🚛 Truck</option>
+        <option value="carreta">🚚 Carreta</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Cidade de Destino</label>
+      <select id="mv-destino">
+        <option value="">Selecione...</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Carga</label>
+      <select id="mv-carga">
+        <option value="carregado">📦 Carregado — 60 km/h</option>
+        <option value="vazio">🔓 Vazio — 80 km/h</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label>Status</label>
+      <select id="mv-status">
+        <option value="aguardando">🔵 Aguardando</option>
+        <option value="rota">🟠 Em Rota</option>
+        <option value="entregue">🟢 Entregue</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="fecharModalViagem()">Cancelar</button>
+      <button class="btn-modal-save" onclick="salvarViagem()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN ADMIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">Área do Administrador</div>
+    <div class="login-sub">Digite a senha para gerenciar viagens</div>
+    <div class="login-error" id="loginError">Senha incorreta. Tente novamente.</div>
+    <div class="modal-field" style="text-align:left">
+      <label>Senha</label>
+      <input type="password" id="loginSenha" placeholder="••••••••" onkeydown="if(event.key==='Enter') tentarLogin()">
+    </div>
+    <button class="btn-modal-save" style="width:100%;margin-top:4px" onclick="tentarLogin()">Entrar</button>
+    <button class="btn-modal-cancel" style="width:100%;margin-top:10px" onclick="fecharLogin()">Cancelar</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="toast" id="toast">✓ Configurações salvas!</div>
+
+<script>
+// =====================================================
+// BASE DE CIDADES — distância ida (km) de Piracicaba
+// Fonte: DER-SP, DNIT, rotamapas.com.br
+// =====================================================
+const CIDADES = [
+  {n:"Adamantina", s:"SP", d:439},
+  {n:"Alfenas", s:"MG", d:440},
+  {n:"Altinópolis", s:"SP", d:255},
+  {n:"Americana", s:"SP", d:32},
+  {n:"Analândia", s:"SP", d:55},
+  {n:"Andradina", s:"SP", d:488},
+  {n:"Angatuba", s:"SP", d:155},
+  {n:"Anápolis", s:"GO", d:890},
+  {n:"Aparecida", s:"SP", d:282},
+  {n:"Aparecida de Goiânia", s:"GO", d:920},
+  {n:"Apucarana", s:"PR", d:490},
+  {n:"Araguari", s:"MG", d:480},
+  {n:"Arapongas", s:"PR", d:495},
+  {n:"Araraquara", s:"SP", d:137},
+  {n:"Araras", s:"SP", d:56},
+  {n:"Araucária", s:"PR", d:425},
+  {n:"Araxá", s:"MG", d:440},
+  {n:"Araçatuba", s:"SP", d:388},
+  {n:"Arceburgo", s:"MG", d:320},
+  {n:"Artur Nogueira", s:"SP", d:82},
+  {n:"Atibaia", s:"SP", d:128},
+  {n:"Avaré", s:"SP", d:175},
+  {n:"Barbacena", s:"MG", d:560},
+  {n:"Barretos", s:"SP", d:287},
+  {n:"Barueri", s:"SP", d:140},
+  {n:"Bebedouro", s:"SP", d:240},
+  {n:"Belo Horizonte", s:"MG", d:588},
+  {n:"Bertioga", s:"SP", d:250},
+  {n:"Betim", s:"MG", d:600},
+  {n:"Birigui", s:"SP", d:368},
+  {n:"Bocaina", s:"SP", d:148},
+  {n:"Bocaiúva", s:"MG", d:940},
+  {n:"Botucatu", s:"SP", d:113},
+  {n:"Bragança Paulista", s:"SP", d:139},
+  {n:"Brodowski", s:"SP", d:220},
+  {n:"Brotas", s:"SP", d:88},
+  {n:"Caldas Novas", s:"GO", d:720},
+  {n:"Cambé", s:"PR", d:478},
+  {n:"Campinas", s:"SP", d:76},
+  {n:"Campo Largo", s:"PR", d:410},
+  {n:"Campo Limpo Paulista", s:"SP", d:120},
+  {n:"Campo Mourão", s:"PR", d:570},
+  {n:"Capivari", s:"SP", d:42},
+  {n:"Caraguatatuba", s:"SP", d:307},
+  {n:"Carapicuíba", s:"SP", d:145},
+  {n:"Caratinga", s:"MG", d:820},
+  {n:"Cascavel", s:"PR", d:700},
+  {n:"Castro", s:"PR", d:490},
+  {n:"Catalão", s:"GO", d:680},
+  {n:"Catanduva", s:"SP", d:248},
+  {n:"Caxambu", s:"MG", d:430},
+  {n:"Caçapava", s:"SP", d:248},
+  {n:"Ceres", s:"GO", d:1010},
+  {n:"Cerqueira César", s:"SP", d:210},
+  {n:"Charqueada", s:"SP", d:22},
+  {n:"Cianorte", s:"PR", d:605},
+  {n:"Colombo", s:"PR", d:415},
+  {n:"Conchal", s:"SP", d:65},
+  {n:"Conselheiro Lafaiete", s:"MG", d:590},
+  {n:"Contagem", s:"MG", d:595},
+  {n:"Cordeirópolis", s:"SP", d:38},
+  {n:"Cornélio Procópio", s:"PR", d:525},
+  {n:"Corumbataí", s:"SP", d:48},
+  {n:"Cruzeiro", s:"SP", d:355},
+  {n:"Cubatão", s:"SP", d:218},
+  {n:"Curitiba", s:"PR", d:415},
+  {n:"Diadema", s:"SP", d:162},
+  {n:"Divinópolis", s:"MG", d:620},
+  {n:"Dois Córregos", s:"SP", d:110},
+  {n:"Dracena", s:"SP", d:494},
+  {n:"Elias Fausto", s:"SP", d:53},
+  {n:"Engenheiro Coelho", s:"SP", d:78},
+  {n:"Fazenda Rio Grande", s:"PR", d:420},
+  {n:"Fernandópolis", s:"SP", d:416},
+  {n:"Floreal", s:"SP", d:400},
+  {n:"Formiga", s:"MG", d:560},
+  {n:"Formosa", s:"GO", d:1020},
+  {n:"Foz do Iguaçu", s:"PR", d:885},
+  {n:"Franca", s:"SP", d:292},
+  {n:"Francisco Beltrão", s:"PR", d:760},
+  {n:"Francisco Morato", s:"SP", d:120},
+  {n:"Franco da Rocha", s:"SP", d:118},
+  {n:"Frutal", s:"MG", d:480},
+  {n:"General Salgado", s:"SP", d:410},
+  {n:"Goiás", s:"GO", d:1060},
+  {n:"Goiânia", s:"GO", d:930},
+  {n:"Governador Valadares", s:"MG", d:850},
+  {n:"Guaraniaçu", s:"PR", d:690},
+  {n:"Guarapuava", s:"PR", d:555},
+  {n:"Guaratinguetá", s:"SP", d:315},
+  {n:"Guarujá", s:"SP", d:240},
+  {n:"Guarulhos", s:"SP", d:160},
+  {n:"Guaxupé", s:"MG", d:340},
+  {n:"Guaíra", s:"SP", d:320},
+  {n:"Holambra", s:"SP", d:78},
+  {n:"Hortolândia", s:"SP", d:60},
+  {n:"Ibaté", s:"SP", d:110},
+  {n:"Ibiporã", s:"PR", d:480},
+  {n:"Ibitinga", s:"SP", d:182},
+  {n:"Ilha Solteira", s:"SP", d:510},
+  {n:"Indaiatuba", s:"SP", d:68},
+  {n:"Inhumas", s:"GO", d:950},
+  {n:"Ipatinga", s:"MG", d:800},
+  {n:"Ipeúna", s:"SP", d:35},
+  {n:"Iracemápolis", s:"SP", d:24},
+  {n:"Irati", s:"PR", d:530},
+  {n:"Itajubá", s:"MG", d:410},
+  {n:"Itanhaém", s:"SP", d:235},
+  {n:"Itapecerica da Serra", s:"SP", d:168},
+  {n:"Itapetininga", s:"SP", d:120},
+  {n:"Itapeva", s:"SP", d:241},
+  {n:"Itapevi", s:"SP", d:138},
+  {n:"Itatiba", s:"SP", d:105},
+  {n:"Itatinga", s:"SP", d:160},
+  {n:"Itaúna", s:"MG", d:580},
+  {n:"Itu", s:"SP", d:90},
+  {n:"Ituiutaba", s:"MG", d:430},
+  {n:"Itumbiara", s:"GO", d:600},
+  {n:"Ituverava", s:"SP", d:295},
+  {n:"Itápolis", s:"SP", d:195},
+  {n:"Jacarezinho", s:"PR", d:430},
+  {n:"Jacareí", s:"SP", d:210},
+  {n:"Jaguariúna", s:"SP", d:85},
+  {n:"Jales", s:"SP", d:449},
+  {n:"Janaúba", s:"MG", d:1020},
+  {n:"Jandira", s:"SP", d:138},
+  {n:"Januária", s:"MG", d:1050},
+  {n:"Jardinópolis", s:"SP", d:208},
+  {n:"Jataí", s:"GO", d:830},
+  {n:"Jaú", s:"SP", d:133},
+  {n:"José Bonifácio", s:"SP", d:318},
+  {n:"João Monlevade", s:"MG", d:740},
+  {n:"Juiz de Fora", s:"MG", d:660},
+  {n:"Jundiaí", s:"SP", d:107},
+  {n:"Laranjeiras do Sul", s:"PR", d:630},
+  {n:"Lavras", s:"MG", d:450},
+  {n:"Leme", s:"SP", d:72},
+  {n:"Limeira", s:"SP", d:39},
+  {n:"Lins", s:"SP", d:292},
+  {n:"Londrina", s:"PR", d:483},
+  {n:"Lorena", s:"SP", d:340},
+  {n:"Luziânia", s:"GO", d:900},
+  {n:"Manhuaçu", s:"MG", d:780},
+  {n:"Maringá", s:"PR", d:490},
+  {n:"Matinhos", s:"PR", d:530},
+  {n:"Mauá", s:"SP", d:165},
+  {n:"Medianeira", s:"PR", d:820},
+  {n:"Miguelópolis", s:"SP", d:275},
+  {n:"Mineiros", s:"GO", d:830},
+  {n:"Mineiros do Tietê", s:"SP", d:110},
+  {n:"Mirassol", s:"SP", d:290},
+  {n:"Mogi das Cruzes", s:"SP", d:198},
+  {n:"Mogi Guaçu", s:"SP", d:82},
+  {n:"Mogi Mirim", s:"SP", d:85},
+  {n:"Mombuca", s:"SP", d:32},
+  {n:"Mongaguá", s:"SP", d:230},
+  {n:"Monte Mor", s:"SP", d:55},
+  {n:"Montes Claros", s:"MG", d:900},
+  {n:"Morrinhos", s:"GO", d:680},
+  {n:"Morro da Fumaça", s:"SC", d:446},
+  {n:"Morungaba", s:"SP", d:110},
+  {n:"Muriaé", s:"MG", d:740},
+  {n:"Muzambinho", s:"MG", d:355},
+  {n:"Nerópolis", s:"GO", d:940},
+  {n:"Nova Odessa", s:"SP", d:45},
+  {n:"Oliveira", s:"MG", d:540},
+  {n:"Olímpia", s:"SP", d:290},
+  {n:"Osasco", s:"SP", d:148},
+  {n:"Ourinhos", s:"SP", d:287},
+  {n:"Paranaguá", s:"PR", d:520},
+  {n:"Paranavaí", s:"PR", d:600},
+  {n:"Pará de Minas", s:"MG", d:610},
+  {n:"Passos", s:"MG", d:430},
+  {n:"Patos de Minas", s:"MG", d:700},
+  {n:"Patrocínio", s:"MG", d:620},
+  {n:"Paulínia", s:"SP", d:68},
+  {n:"Pedreira", s:"SP", d:88},
+  {n:"Penápolis", s:"SP", d:342},
+  {n:"Pereira Barreto", s:"SP", d:468},
+  {n:"Peruíbe", s:"SP", d:242},
+  {n:"Pindamonhangaba", s:"SP", d:275},
+  {n:"Pinhais", s:"PR", d:418},
+  {n:"Pinheiro Preto", s:"SC", d:415},
+  {n:"Piracanjuba", s:"GO", d:710},
+  {n:"Pirapora", s:"MG", d:860},
+  {n:"Pirassununga", s:"SP", d:75},
+  {n:"Pirinópolis", s:"GO", d:895},
+  {n:"Ponta Grossa", s:"PR", d:500},
+  {n:"Pontal do Paraná", s:"PR", d:535},
+  {n:"Ponte Nova", s:"MG", d:730},
+  {n:"Pouso Alegre", s:"MG", d:310},
+  {n:"Poços de Caldas", s:"MG", d:290},
+  {n:"Praia Grande", s:"SP", d:228},
+  {n:"Presidente Prudente", s:"SP", d:466},
+  {n:"Promissão", s:"SP", d:295},
+  {n:"Quirinópolis", s:"GO", d:720},
+  {n:"Rafard", s:"SP", d:35},
+  {n:"Ribeirão Pires", s:"SP", d:172},
+  {n:"Ribeirão Preto", s:"SP", d:195},
+  {n:"Rio Claro", s:"SP", d:32},
+  {n:"Rio das Pedras", s:"SP", d:19},
+  {n:"Rio Verde", s:"GO", d:830},
+  {n:"Rolândia", s:"PR", d:485},
+  {n:"Sacramento", s:"MG", d:480},
+  {n:"Saltinho", s:"SP", d:28},
+  {n:"Salto", s:"SP", d:98},
+  {n:"Santa Bárbara d\'Oeste", s:"SP", d:28},
+  {n:"Santa Cruz da Conceição", s:"SP", d:45},
+  {n:"Santa Gertrudes", s:"SP", d:38},
+  {n:"Santa Maria da Serra", s:"SP", d:30},
+  {n:"Santo André", s:"SP", d:160},
+  {n:"Santo Antônio da Platina", s:"PR", d:440},
+  {n:"Santo Antônio de Posse", s:"SP", d:88},
+  {n:"Santos", s:"SP", d:227},
+  {n:"Senador Canedo", s:"GO", d:925},
+  {n:"Serra Negra", s:"SP", d:140},
+  {n:"Sertãozinho", s:"SP", d:205},
+  {n:"Sete Lagoas", s:"MG", d:650},
+  {n:"Socorro", s:"SP", d:145},
+  {n:"Sorocaba", s:"SP", d:110},
+  {n:"Sumaré", s:"SP", d:50},
+  {n:"Suzano", s:"SP", d:185},
+  {n:"São Bernardo do Campo", s:"SP", d:162},
+  {n:"São Caetano do Sul", s:"SP", d:158},
+  {n:"São Carlos", s:"SP", d:96},
+  {n:"São Joaquim da Barra", s:"SP", d:274},
+  {n:"São José do Rio Preto", s:"SP", d:302},
+  {n:"São José dos Campos", s:"SP", d:226},
+  {n:"São José dos Pinhais", s:"PR", d:422},
+  {n:"São Lourenço", s:"MG", d:390},
+  {n:"São Paulo", s:"SP", d:154},
+  {n:"São Pedro", s:"SP", d:32},
+  {n:"São Sebastião", s:"SP", d:298},
+  {n:"São Sebastião do Paraíso", s:"MG", d:340},
+  {n:"São Vicente", s:"SP", d:225},
+  {n:"Tabatinga", s:"SP", d:155},
+  {n:"Taboão da Serra", s:"SP", d:155},
+  {n:"Taquarituba", s:"SP", d:220},
+  {n:"Taubaté", s:"SP", d:268},
+  {n:"Toledo", s:"PR", d:730},
+  {n:"Trindade", s:"GO", d:935},
+  {n:"Três Corações", s:"MG", d:390},
+  {n:"Três Lagoas", s:"SP", d:530},
+  {n:"Tupã", s:"SP", d:375},
+  {n:"Ubatuba", s:"SP", d:320},
+  {n:"Uberaba", s:"MG", d:372},
+  {n:"Uberlândia", s:"MG", d:450},
+  {n:"Ubá", s:"MG", d:680},
+  {n:"Umuarama", s:"PR", d:650},
+  {n:"União da Vitória", s:"PR", d:595},
+  {n:"Uruaçu", s:"GO", d:1020},
+  {n:"Valinhos", s:"SP", d:82},
+  {n:"Valparaíso de Goiás", s:"GO", d:910},
+  {n:"Varginha", s:"MG", d:390},
+  {n:"Vinhedo", s:"SP", d:88},
+  {n:"Viçosa", s:"MG", d:720},
+  {n:"Votuporanga", s:"SP", d:385},
+  {n:"Várzea Paulista", s:"SP", d:112},
+  {n:"Águas de São Pedro", s:"SP", d:38}
+];
+
+// sort alphabetical
+CIDADES.sort((a,b)=>a.n.localeCompare(b.n,'pt'));
+
+// =====================================================
+// CONFIG
+// =====================================================
+let cfg = {truck:{kml:1.5,eixos:6},carreta:{kml:1.2,eixos:8},diesel:5.60,margem:0.04};
+(function(){
+  try{ const s=localStorage.getItem('frete_v4'); if(s) cfg=JSON.parse(s); }catch{}
+  syncCfgInputs(); updateSpecs();
+})();
+
+function saveConfig(){
+  cfg.truck.kml    = parseFloat(document.getElementById('cfg-tkml').value)||1.5;
+  cfg.truck.eixos  = parseInt(document.getElementById('cfg-teixos').value)||6;
+  cfg.carreta.kml  = parseFloat(document.getElementById('cfg-ckml').value)||1.2;
+  cfg.carreta.eixos= parseInt(document.getElementById('cfg-ceixos').value)||8;
+  cfg.diesel       = parseFloat(document.getElementById('cfg-diesel').value)||5.60;
+  cfg.margem       = parseFloat(document.getElementById('cfg-margem').value)||0.04;
+  try{ localStorage.setItem('frete_v4',JSON.stringify(cfg)); }catch{}
+  updateSpecs(); recalc();
+  const t=document.getElementById('toast');
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function syncCfgInputs(){
+  document.getElementById('cfg-tkml').value    = cfg.truck.kml;
+  document.getElementById('cfg-teixos').value  = cfg.truck.eixos;
+  document.getElementById('cfg-ckml').value    = cfg.carreta.kml;
+  document.getElementById('cfg-ceixos').value  = cfg.carreta.eixos;
+  document.getElementById('cfg-diesel').value  = cfg.diesel;
+  document.getElementById('cfg-margem').value  = cfg.margem;
+}
+
+function updateSpecs(){
+  document.getElementById('spec-truck').textContent   = `${cfg.truck.kml.toFixed(1)} km/L · ${cfg.truck.eixos} eixos`;
+  document.getElementById('spec-carreta').textContent = `${cfg.carreta.kml.toFixed(1)} km/L · ${cfg.carreta.eixos} eixos`;
+}
+
+// =====================================================
+// STATE
+// =====================================================
+let veiculo='truck', selectedIdx=null, stateFilter='TODOS', hiIdx=-1;
+
+function showTab(name,btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='cities') renderTable('');
+  if(name==='historico') renderHistorico();
+}
+
+function selectVeh(v){
+  veiculo=v;
+  document.getElementById('btn-truck').className   ='veh-btn'+(v==='truck'?' active-truck':'');
+  document.getElementById('btn-carreta').className ='veh-btn'+(v==='carreta'?' active-carreta':'');
+  recalc();
+}
+
+function filterState(s,btn){
+  stateFilter=s;
+  document.querySelectorAll('.sf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  onSearch();
+}
+
+// =====================================================
+// SEARCH / DROPDOWN
+// =====================================================
+function getFiltered(q){
+  let list = stateFilter==='TODOS' ? CIDADES : CIDADES.filter(c=>c.s===stateFilter);
+  if(q) list = list.filter(c=>c.n.toLowerCase().includes(q.toLowerCase()));
+  return list;
+}
+
+function onSearch(){
+  const q = document.getElementById('searchInput').value.trim();
+  const dd = document.getElementById('dropdown');
+  hiIdx=-1;
+  const matches = getFiltered(q).slice(0,12);
+  if(!matches.length){ dd.classList.remove('open'); return; }
+  dd.innerHTML = matches.map((c,i)=>`
+    <div class="dd-item" data-i="${i}" onmousedown="pickCity(${CIDADES.indexOf(c)})">
+      <span><span class="dd-city">${c.n}</span><span class="dd-state">${c.s}</span></span>
+      <span class="dd-dist">${c.d} km ida</span>
+    </div>
+  `).join('');
+  dd.classList.add('open');
+}
+
+function onKey(e){
+  const dd=document.getElementById('dropdown');
+  const items=dd.querySelectorAll('.dd-item');
+  if(!dd.classList.contains('open')||!items.length) return;
+  if(e.key==='ArrowDown'){ hiIdx=Math.min(hiIdx+1,items.length-1); }
+  else if(e.key==='ArrowUp'){ hiIdx=Math.max(hiIdx-1,0); }
+  else if(e.key==='Enter'){ if(hiIdx>=0) items[hiIdx].dispatchEvent(new Event('mousedown')); return; }
+  else return;
+  items.forEach((it,i)=>it.classList.toggle('hi',i===hiIdx));
+  e.preventDefault();
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.search-wrap'))
+    document.getElementById('dropdown').classList.remove('open');
+});
+
+// =====================================================
+// PEDÁGIO SALVO POR CIDADE
+// =====================================================
+function loadPedagios(){
+  try{ const s=localStorage.getItem('frete_pedagogios'); return s?JSON.parse(s):{}; }catch{ return {}; }
+}
+function savePedagios(obj){
+  try{ localStorage.setItem('frete_pedagogios',JSON.stringify(obj)); }catch{}
+}
+
+// =====================================================
+// HISTÓRICO
+// =====================================================
+function loadHistorico(){
+  try{ const s=localStorage.getItem('frete_historico'); return s?JSON.parse(s):[]; }catch{ return []; }
+}
+function saveHistorico(arr){
+  try{ localStorage.setItem('frete_historico',JSON.stringify(arr)); }catch{}
+}
+
+function addHistorico(entry){
+  let h = loadHistorico();
+  h.unshift(entry);
+  if(h.length > 30) h = h.slice(0,30);
+  saveHistorico(h);
+}
+
+function renderHistorico(){
+  const h = loadHistorico();
+  const el = document.getElementById('historicoList');
+  if(!h.length){
+    el.innerHTML='<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px 0">Nenhum frete calculado ainda.</p>';
+    return;
+  }
+  el.innerHTML = h.map((e,i)=>`
+    <div class="hist-item">
+      <div class="hist-left">
+        <div class="hist-city">${e.cidade} <span style="font-size:11px;font-weight:500;color:var(--muted)">— ${e.estado}</span></div>
+        <div class="hist-meta">${e.veiculo} · Ped: R$${e.pedagio.toFixed(2)} · ${e.tanques} tanque(s) · ${e.data}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="hist-val">${e.frete}</div>
+        <button class="hist-reuse" onclick="reuseHistorico(${i})">↩ Usar</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function reuseHistorico(i){
+  const h = loadHistorico();
+  const e = h[i];
+  const idx = CIDADES.findIndex(c=>c.n===e.cidade && c.s===e.estado);
+  if(idx<0) return;
+  // switch to calc tab
+  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  selectVeh(e.veiculoKey);
+  document.getElementById('inputPedagio').value = e.pedagio;
+  document.getElementById('inputTanques').value = e.tanques;
+  pickCity(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function limparHistorico(){
+  if(confirm('Limpar todo o histórico?')){ saveHistorico([]); renderHistorico(); }
+}
+
+// =====================================================
+// PICK / CLEAR CITY
+// =====================================================
+function pickCity(idx){
+  selectedIdx=idx;
+  const c=CIDADES[idx];
+  document.getElementById('searchInput').value=`${c.n} - ${c.s}`;
+  document.getElementById('dropdown').classList.remove('open');
+  document.getElementById('scName').textContent=`${c.n} — ${c.s}`;
+  document.getElementById('scDist').textContent=`${c.d} km ida · ${c.d*2} km ida+volta`;
+
+  // Preenche pedágio salvo se existir
+  const pedagogios = loadPedagios();
+  const key = `${c.n}-${c.s}`;
+  const hint = document.getElementById('scHint');
+  if(pedagogios[key] !== undefined){
+    document.getElementById('inputPedagio').value = pedagogios[key];
+    hint.textContent = `⚡ Pedágio salvo: R$ ${parseFloat(pedagogios[key]).toFixed(2).replace('.',',')}`;
+  } else {
+    hint.textContent = '';
+  }
+
+  document.getElementById('selectedCity').classList.add('visible');
+  recalc();
+}
+
+function clearCity(){
+  selectedIdx=null;
+  document.getElementById('searchInput').value='';
+  document.getElementById('selectedCity').classList.remove('visible');
+  document.getElementById('resultBox').classList.remove('visible');
+  document.getElementById('formulaBox').textContent='Selecione uma cidade para ver o cálculo';
+  document.getElementById('scHint').textContent='';
+}
+
+// =====================================================
+// CALCULAR
+// =====================================================
+function fmt(n){ return 'R$ '+n.toFixed(2).replace('.',','); }
+
+function recalc(){
+  if(selectedIdx===null) return;
+  const c  = CIDADES[selectedIdx];
+  const v  = cfg[veiculo];
+  const dist   = c.d;
+  const dist2  = dist*2;
+  const pedagio= parseFloat(document.getElementById('inputPedagio').value)||0;
+  const tanques= parseFloat(document.getElementById('inputTanques').value)||1;
+  const margem = cfg.margem;
+
+  const capacidade  = veiculo === 'truck' ? 15000 : 30000;
+  const litros      = dist2 / v.kml;
+  const custoDiesel = litros * cfg.diesel;
+  const custoPed    = pedagio * v.eixos;
+  const bruto       = custoDiesel + custoPed;
+  const porTanque   = bruto / tanques;
+  const final       = (porTanque / capacidade) + margem;
+
+  // Salva pedágio desta cidade automaticamente
+  if(pedagio > 0){
+    const pedagogios = loadPedagios();
+    pedagogios[`${c.n}-${c.s}`] = pedagio;
+    savePedagios(pedagogios);
+    const hint = document.getElementById('scHint');
+    hint.textContent = `⚡ Pedágio salvo: R$ ${pedagio.toFixed(2).replace('.',',')}`;
+  }
+
+  // formula strip
+  document.getElementById('formulaBox').innerHTML =
+    `<span class="fy">(${dist2} km ÷ ${v.kml} km/L) × R$${cfg.diesel.toFixed(2)}</span> = ${fmt(custoDiesel)} <em style="opacity:.6">(diesel)</em><br>`+
+    `<span class="fb">R$${pedagio.toFixed(2)} × ${v.eixos} eixos</span> = ${fmt(custoPed)} <em style="opacity:.6">(pedágio)</em><br>`+
+    `<span class="fg">(${fmt(custoDiesel)} + ${fmt(custoPed)}) ÷ ${tanques} ÷ ${capacidade.toLocaleString('pt-BR')} + R$${margem.toFixed(2)}</span> = <strong style="color:var(--text2)">${fmt(final)}</strong>`;
+
+  document.getElementById('rValor').textContent = fmt(final);
+  document.getElementById('rInfo').textContent  =
+    `${veiculo==='truck'?'🚛 Truck':'🚚 Carreta'} · ${c.n}-${c.s} · ${tanques} tanque(s)`;
+
+  document.getElementById('b0').textContent = `${dist} km`;
+  document.getElementById('b1').textContent = `${dist2} km`;
+  document.getElementById('b2').textContent = `${litros.toFixed(2)} L`;
+  document.getElementById('b3').textContent = fmt(custoDiesel);
+  document.getElementById('b4').textContent = `${fmt(custoPed)} (${v.eixos} eixos)`;
+  document.getElementById('b5').textContent = fmt(bruto);
+  document.getElementById('b6').textContent = fmt(porTanque);
+  document.getElementById('b7').textContent = `÷ ${capacidade.toLocaleString('pt-BR')} = ${fmt(porTanque/capacidade)}`;
+  document.getElementById('b8').textContent = fmt(final);
+
+  document.getElementById('resultBox').classList.add('visible');
+
+  // Salva no histórico
+  const now = new Date();
+  const data = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  addHistorico({
+    cidade: c.n, estado: c.s,
+    veiculo: veiculo==='truck'?'🚛 Truck':'🚚 Carreta',
+    veiculoKey: veiculo,
+    pedagio, tanques, frete: fmt(final), data
+  });
+}
+
+// =====================================================
+// TABELA DE CIDADES
+// =====================================================
+function renderTable(q){
+  const tbody=document.getElementById('citiesTable');
+  const list = q ? CIDADES.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.s.toLowerCase().includes(q.toLowerCase())) : CIDADES;
+  tbody.innerHTML = list.map(c=>`
+    <tr onclick="goCalc(${CIDADES.indexOf(c)})">
+      <td class="city-name">${c.n}</td>
+      <td><span class="state-badge">${c.s}</span></td>
+      <td class="dist-val">${c.d} km</td>
+      <td class="dist-val">${c.d*2} km</td>
+    </tr>
+  `).join('');
+}
+
+function filterTable(q){ renderTable(q); }
+
+function goCalc(idx){
+  showTab('calc', document.querySelectorAll('.tab-btn')[0]);
+  pickCity(idx);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// =====================================================
+// VIAGENS — Painel de Monitoramento
+// =====================================================
+const ADMIN_SENHA = 'admin123';
+const VEL_CARREGADO = 60; // km/h
+const VEL_VAZIO     = 80; // km/h
+let adminLogado   = false;
+let viagemEditIdx = null;
+let viagensFiltro = 'TODOS';
+
+function loadViagens(){
+  try{ const s=localStorage.getItem('cerba_viagens'); return s?JSON.parse(s):[]; }catch{ return []; }
+}
+function saveViagens(arr){
+  try{ localStorage.setItem('cerba_viagens',JSON.stringify(arr)); }catch{}
+}
+
+// ── LOGIN ──────────────────────────────────────────
+function pedirAdmin(callback){
+  if(adminLogado){ callback(); return; }
+  document.getElementById('loginOverlay').classList.add('open');
+  document.getElementById('loginSenha').value='';
+  document.getElementById('loginError').style.display='none';
+  window._adminCallback = callback;
+  setTimeout(()=>document.getElementById('loginSenha').focus(),100);
+}
+
+function tentarLogin(){
+  const s = document.getElementById('loginSenha').value;
+  if(s === ADMIN_SENHA){
+    adminLogado = true;
+    document.getElementById('loginOverlay').classList.remove('open');
+    if(window._adminCallback){ window._adminCallback(); window._adminCallback=null; }
+  } else {
+    document.getElementById('loginError').style.display='block';
+    document.getElementById('loginSenha').value='';
+    document.getElementById('loginSenha').focus();
+  }
+}
+
+function fecharLogin(){
+  document.getElementById('loginOverlay').classList.remove('open');
+  window._adminCallback=null;
+}
+
+// ── MODAL ──────────────────────────────────────────
+function abrirModalViagem(idx){
+  pedirAdmin(()=>{
+    viagemEditIdx = idx !== undefined ? idx : null;
+    const modal = document.getElementById('modalViagem');
+
+    // Popula o select de cidades
+    const sel = document.getElementById('mv-destino');
+    sel.innerHTML = '<option value="">Selecione a cidade...</option>' +
+      CIDADES.map((c,i)=>`<option value="${i}">${c.n} — ${c.s} (${c.d} km)</option>`).join('');
+
+    if(viagemEditIdx !== null){
+      const v = loadViagens()[viagemEditIdx];
+      document.getElementById('modalViagemTitle').textContent = '✏️ Editar Viagem';
+      document.getElementById('mv-motorista').value = v.motorista;
+      document.getElementById('mv-placa').value     = v.placa;
+      document.getElementById('mv-tipo').value      = v.tipo;
+      document.getElementById('mv-carga').value     = v.carga || 'carregado';
+      document.getElementById('mv-destino').value   = v.cidadeIdx;
+      document.getElementById('mv-status').value    = v.status;
+    } else {
+      document.getElementById('modalViagemTitle').textContent = '🚛 Nova Viagem';
+      document.getElementById('mv-motorista').value = '';
+      document.getElementById('mv-placa').value     = '';
+      document.getElementById('mv-tipo').value      = 'truck';
+      document.getElementById('mv-destino').value   = '';
+      document.getElementById('mv-status').value    = 'rota';
+    }
+
+    modal.classList.add('open');
+    setTimeout(()=>document.getElementById('mv-motorista').focus(),100);
+  });
+}
+
+function fecharModalViagem(){
+  document.getElementById('modalViagem').classList.remove('open');
+}
+
+function salvarViagem(){
+  const motorista = document.getElementById('mv-motorista').value.trim();
+  const placa     = document.getElementById('mv-placa').value.trim().toUpperCase();
+  const tipo      = document.getElementById('mv-tipo').value;
+  const carga     = document.getElementById('mv-carga').value;
+  const cidadeIdx = parseInt(document.getElementById('mv-destino').value);
+  const status    = document.getElementById('mv-status').value;
+
+  if(!motorista || !placa || isNaN(cidadeIdx)){
+    alert('Preencha todos os campos!'); return;
+  }
+
+  const cidade = CIDADES[cidadeIdx];
+  const distKm = cidade.d;
+  const velMedia = carga === 'carregado' ? VEL_CARREGADO : VEL_VAZIO;
+  const tempoH = distKm / velMedia;
+  const tempoStr = formatarTempo(tempoH);
+
+  const viagem = {
+    motorista, placa, tipo, carga, cidadeIdx,
+    cidade: cidade.n, estado: cidade.s,
+    distKm, tempoEstimado: tempoStr,
+    velMedia, status,
+    criadoEm: viagemEditIdx !== null
+      ? loadViagens()[viagemEditIdx].criadoEm
+      : new Date().toLocaleString('pt-BR')
+  };
+
+  const viagens = loadViagens();
+  if(viagemEditIdx !== null){
+    viagens[viagemEditIdx] = viagem;
+  } else {
+    viagens.unshift(viagem);
+  }
+  saveViagens(viagens);
+  fecharModalViagem();
+  renderViagens();
+
+  const t=document.getElementById('toast');
+  t.textContent = viagemEditIdx !== null ? '✓ Viagem atualizada!' : '✓ Viagem registrada!';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+function excluirViagem(idx){
+  pedirAdmin(()=>{
+    if(!confirm('Excluir esta viagem?')) return;
+    const viagens = loadViagens();
+    viagens.splice(idx,1);
+    saveViagens(viagens);
+    renderViagens();
+  });
+}
+
+function atualizarStatus(idx, novoStatus){
+  pedirAdmin(()=>{
+    const viagens = loadViagens();
+    viagens[idx].status = novoStatus;
+    saveViagens(viagens);
+    renderViagens();
+  });
+}
+
+function filtrarViagens(f, btn){
+  viagensFiltro = f;
+  document.querySelectorAll('#tab-viagens .sf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderViagens();
+}
+
+function formatarTempo(horas){
+  const h = Math.floor(horas);
+  const m = Math.round((horas - h) * 60);
+  if(h === 0) return `${m}min`;
+  if(m === 0) return `${h}h`;
+  return `${h}h ${m}min`;
+}
+
+function statusLabel(s){
+  if(s==='rota')      return '<span class="status-badge status-rota">🟠 Em Rota</span>';
+  if(s==='entregue')  return '<span class="status-badge status-entregue">🟢 Entregue</span>';
+  return '<span class="status-badge status-aguardando">🔵 Aguardando</span>';
+}
+
+function tipoLabel(t){
+  return t==='truck' ? '🚛 Truck' : '🚚 Carreta';
+}
+
+function progressoPct(status){
+  if(status==='aguardando') return 10;
+  if(status==='rota')       return 60;
+  return 100;
+}
+
+function renderViagens(){
+  let viagens = loadViagens();
+  if(viagensFiltro !== 'TODOS') viagens = viagens.filter(v=>v.status===viagensFiltro);
+
+  // Contadores
+  const todos = loadViagens();
+  const cEl = document.getElementById('viagensContadores');
+  if(cEl){
+    const nRota = todos.filter(v=>v.status==='rota').length;
+    const nAg   = todos.filter(v=>v.status==='aguardando').length;
+    const nEnt  = todos.filter(v=>v.status==='entregue').length;
+    cEl.innerHTML = [
+      {label:'Total',val:todos.length,color:'var(--blue)',bg:'var(--blue-light)'},
+      {label:'Em Rota',val:nRota,color:'#e67e00',bg:'#fff3e0'},
+      {label:'Aguardando',val:nAg,color:'var(--blue)',bg:'var(--blue-light)'},
+      {label:'Entregues',val:nEnt,color:'#1a8a72',bg:'var(--teal-light)'},
+    ].map(c=>`
+      <div style="background:${c.bg};border-radius:12px;padding:16px 20px;text-align:center">
+        <div style="font-size:28px;font-weight:900;color:${c.color}">${c.val}</div>
+        <div style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px">${c.label}</div>
+      </div>`).join('');
+  }
+
+  const el = document.getElementById('viagensList');
+  if(!viagens.length){
+    el.innerHTML = `<div class="empty-state">
+      <div class="es-icon">🚛</div>
+      <div style="font-weight:700;color:var(--text2);margin-bottom:6px">Nenhuma viagem encontrada</div>
+      <div>Clique em "+ Nova Viagem" para registrar</div>
+    </div>`;
+    return;
+  }
+
+  const allViagens = loadViagens();
+
+  el.innerHTML = viagens.map(v => {
+    const realIdx = allViagens.findIndex(a=>
+      a.motorista===v.motorista && a.placa===v.placa && a.criadoEm===v.criadoEm
+    );
+    const pct = progressoPct(v.status);
+    return `
+    <div class="viagem-card status-${v.status}">
+      <div class="viagem-header">
+        <div>
+          <div class="viagem-rota">Piracicaba — SP<span>→ ${v.cidade} — ${v.estado}</span></div>
+          <div class="viagem-placa">${v.placa} · ${tipoLabel(v.tipo)}</div>
+        </div>
+        ${statusLabel(v.status)}
+      </div>
+
+      <div class="viagem-meta">
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">👤 Motorista</div>
+          <div class="viagem-meta-value">${v.motorista}</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">📍 Distância</div>
+          <div class="viagem-meta-value">${v.distKm} km</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">📦 Carga</div>
+          <div class="viagem-meta-value">${v.carga === 'vazio' ? '🔓 Vazio' : '📦 Carregado'}</div>
+        </div>
+        <div class="viagem-meta-item">
+          <div class="viagem-meta-label">⏱ Tempo Estimado</div>
+          <div class="viagem-meta-value" style="color:var(--blue)">${v.tempoEstimado}</div>
+        </div>
+      </div>
+
+      <div class="progress-bar" style="margin-bottom:4px">
+        <div class="progress-fill" style="width:${pct}%"></div>
+      </div>
+      <div style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);margin-bottom:4px">Registrado: ${v.criadoEm}</div>
+
+      <div class="viagem-footer">
+        <div class="viagem-tempo">
+          Vel. média: <strong>${v.velMedia || (v.carga==='vazio' ? VEL_VAZIO : VEL_CARREGADO)} km/h</strong>
+        </div>
+        <div class="viagem-actions">
+          ${v.status === 'aguardando' ? `<button class="btn-status btn-entregar" onclick="atualizarStatus(${realIdx},'rota')" style="background:rgba(230,126,0,.1);color:#e67e00;border-color:#ffc96b">▶ Iniciar</button>` : ''}
+          ${v.status === 'rota' ? `<button class="btn-status btn-entregar" onclick="atualizarStatus(${realIdx},'entregue')">✓ Entregue</button>` : ''}
+          <button class="btn-status btn-editar" onclick="abrirModalViagem(${realIdx})">✏️ Editar</button>
+          <button class="btn-status btn-excluir" onclick="excluirViagem(${realIdx})">✕</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Inicializa viagens quando abre a aba - patch direto no HTML
+// (renderViagens chamado via onclick nos botões da aba)
+
+</script>
+</body>
+</html>
